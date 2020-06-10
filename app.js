@@ -13,7 +13,10 @@ app.use(cookieParser());
 app.use(session({ 
 	secret: 'raining',
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: true,
+  cookie : { // 쿠키에 들어가는 세션 ID값의 옵션
+        maxAge : 1000 * 60 * 10 // 10분까지 유지
+    }
 }));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

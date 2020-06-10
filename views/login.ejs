@@ -17,13 +17,13 @@
 				<form method="post" action="/mall/login" role="login">
 					<h2>Please sign in</h2>
 					<p>To enter in your private dashboard</p>
-					<input type="radio" name="gender" value="남" checked="checked">구매자
-					<input type="radio" name="gender" value="여">판매자
-					<input type="radio" name="gender" value="남">관리자
+					<input type="radio" name="user" value="customer" checked="checked">구매자
+					<input type="radio" name="user" value="seller">판매자
+					<input type="radio" name="user" value="administrator">관리자
 					<div class="form-group">
 	    				<div class="input-group">
 		      				<div class="input-group-addon"><span class="text-primary glyphicon glyphicon-envelope"></span></div>
-							<input type="text" name="ID" id="ID" placeholder="ID" required class="form-control" />
+							<input type="text" name="email" id="email" placeholder="email" required class="form-control" />
 						</div>
 					</div>
 					<div class="form-group">
@@ -32,7 +32,7 @@
 							<input type="password" name="password" id="password" placeholder="Password" required class="form-control" />
 						</div>
 					</div>
-					<button type="submit" name="go" class="btn btn-block btn-success">로그인</button>
+					<button type="submit" class="btn btn-block btn-success">로그인</button>
 					<a href="#" class="btn btn-block btn-default">비밀번호 찾기</a>
 					<a href="#" class="btn btn-block btn-default">회원가입</a>
 				</form>

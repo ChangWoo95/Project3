@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+
+* {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	outline: none;
+}
+body {
+	background: url(../images/bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.login-form {
+	margin: 100px auto;
+	max-width: 400px;
+}
+
+form[role=login] {
+	font: 16px/1.6em Lato, serif;
+	padding: 15px 26px 20px 26px;
+	background: #fff;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+	form[role=login] h2 {
+		font-size: 20px;
+		color: #5d5c5c;
+		margin-bottom: 0.5em;
+	}
+	form[role=login] p {
+		color: #929292;
+		margin-bottom: 25px;
+	}
+	form[role=login] input,
+	form[role=login] button,
+	form[role=login] a.btn {
+		font-size: 16px;
+	}
+	form[role=login] a.btn {
+		margin: 16px 0;		
+	}

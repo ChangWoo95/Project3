@@ -39,13 +39,16 @@ router.post('/login', function(req,res,next){
 		else if(user == 'seller') var sql = "SELECT name FROM seller where email=? and password=?";
 		else var sql = "SELECT name FROM customer where email=? and password=?";
 		
-		connection.query(sql,datas, function(err, rows){
-			if(err) console.error(err);
-
-			req.session.name =rows[0].name; 
-			req.session.islogined = true;
-
-			res.redirect('/mall');
+		connection.query(sql, datas, function(err, rows){
+			if(err) console.error("로그인sql err",err);
+			if(!rows[0]){
+				res.send("<script>alert('등록되지 않은 회원이거나 비밀번호가 틀렸습니다.');history.back();</script>");
+			}
+			else{
+				req.session.name =rows[0].name; 
+				req.session.islogined = true;
+				res.redirect('/mall');
+			}
 			connection.release();
 		});
 	});
@@ -56,6 +59,7 @@ router.get('/logout', function(req, res, next) {
 	res.redirect('/mall');
 });
 
+<<<<<<< HEAD
 router.get('/myaccount', function(req, res, next) {
   var email  = req.body.email;
 
@@ -77,3 +81,43 @@ router.get('/myaccount_update', function(req, res, next) {
 });
 
 module.exports = router;
+=======
+/*회원가입 get method*/
+router.get('/join', function(req, res, next) {
+	res.render('join');
+});
+
+/*회원가입 post method*/
+router.post('/join', function(req, res, next) {
+	var name = req.body.name;
+	var age = req.body.age;
+	var sex = req.body.sex;
+	var address = req.body.address;
+	var phoneNO = req.body.phoneNO;
+	console.log("전화번호 : ",phoneNO);
+	var password = req.body.password;
+	var email = req.body.email;
+	var datas = [name,age,sex,address,phoneNO,password,email];
+
+	var user = req.body.user;
+
+	pool.getConnection(function(err, connection){
+		if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
+	
+		/*user에 따른 조건문*/
+		if(user == 'administrator') var sql = "INSERT INTO administrator(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
+		else if(user == 'seller') var sql = "INSERT INTO seller(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
+		else var sql = "INSERT INTO customer(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
+
+		
+		connection.query(sql,datas, function(err, rows){
+			if(err) console.error(err);
+			console.log("insert 확인 : ",JSON.stringify(rows));
+			if(rows.affectedRows == 1) res.send("<script>alert('회원가입이 완료되었습니다.');location.href='/mall/login';</script>");
+			connection.release();
+		});
+	});
+});
+
+module.exports = router;
+>>>>>>> root_Project3/master

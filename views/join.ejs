@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=1,initial-scale=1,user-scalable=1" />
+	<title>Insert title here</title>
+	
+	<link href="http://fonts.googleapis.com/css?family=Lato:100italic,100,300italic,300,400italic,400,700italic,700,900italic,900" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="assets/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+		<script>
+				function onWriteSubmit(){
+						if($("#email").val() == ""){ //id변수가 공 백시 이벤트
+							alert("이메일(아이디)를 꼭 입력 하세요");
+							$("#email").focus();
+							return;
+						}
+						if($("#password").val() == ""){ //passwd변수가 공백 시 이벤트
+							alert("비밀번호를 꼭 입력 하세요");
+							$("#password").focus();
+							return;
+						}
+						if($("#name").val() == ""){ //name변수가 공백 시 이벤트
+							alert("이름을 꼭 입력 하세요");
+							$("#name").focus();
+							return;
+						}
+						if($("#tel2").val() == ""){ //eamil변수가 공백 시 이벤트
+							alert("전화번호 두번째 자리를 확인해 주세요");
+							$("#tel2").focus();
+							return;
+						}
+						if($("#tel3").val() == ""){ //eamil변수가 공백 시 이벤트
+							alert("전화번호 세번째 자리를 확인해 주세요");
+							$("#tel3").focus();
+							return;
+						}
+
+						var phoneNO = $("#tel1").val() +'-'+ $("#tel2").val() +'-'+ $("#tel3").val();
+						$("#phoneNO").val(phoneNO);
+
+						if($("#address").val() == ""){ //주소
+							alert("주소를 꼭 입력 하세요");
+							$("#address").focus();
+							return;
+						}
+						if($("#age").val() == ""){ //생일
+							alert("나이를 꼭 입력 하세요");
+							$("#age").focus();
+							return;
+						}
+				}
+		</script>	
+</head>
+<body>
+
+	<section class="container">
+			<section class="login-form">
+				<form method="post" action="/mall/join" role="login">
+					<h2>회원가입</h2>
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="radio" name="user" value="사용자" checked="checked">사용자
+							<input type="radio" name="user" value="판매자">판매자
+							<input type="radio" name="user" value="관리자">관리자
+						</div>
+					</div>					
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!--<div class="input-group-addon"><span class="text-primary glyphicon glyphicon-envelope"></span></div> -->
+							<input type="text" name="email" id="email" placeholder="이메일(아이디)" required class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="password" name="password" id="password" placeholder="비밀번호" required class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="text" name="name" id="name" placeholder="이름" required class="form-control" />
+						</div>
+					</div>	
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="radio" name="sex" value="남" checked="checked">남
+							<input type="radio" name="sex" value="여">여
+						</div>
+					</div>
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="text" name="address" id="address" placeholder="주소" required class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+	    				<div class="input-group">
+		      				<!-- <div class="input-group-addon"><span class="text-primary glyphicon glyphicon-lock"></span></div> -->
+							<input type="text" name="age" id="age" placeholder="나이" required class="form-control" />
+						</div>
+					</div>										
+					<div class="form-group">
+	    				<div class="input-group">
+							<input type="hidden" name="phoneNO" id="phoneNO">
+							<select name="tel1" id="tel1">
+								<option value="010">010</option>
+								<option value="011">011</option>
+								<option value="016">016</option>
+								<option value="017">017</option>
+								<option value="018">018</option>
+								<option value="019">019</option>
+							</select>
+							-
+							<input type="text" name="tel2" id="tel2" size="4" maxLength="4">
+							-
+							<input type="text" name="tel3" id="tel3" size="4" maxLength="4">
+						</div>
+					</div>															
+					<button id="btnjoin" class="btn btn-block btn-success" onclick="onWriteSubmit();">가입</button>
+					<a href="/mall/login" class="btn btn-block btn-default">취소</a> 
+				</form>
+			</section>
+	</section>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

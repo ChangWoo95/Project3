@@ -355,12 +355,12 @@
 									<th class="column-1">식별번호</th>
 									<th class="column-2">이름</th>
 									<th class="column-3">나이</th>
-									<th class="column-4">성별</th>
-									<th class="column-5">주소</th>
+									<th class="column-3">성별</th>
+									<th class="column-3">주소</th>
 									<th class="column-6">전화번호</th>
-									<th class="column-7">비밀번호</th>
+									<th class="column-3">비밀번호</th>
 									<th class="column-8">이메일(아이디)</th>
-									<th class="column-9">권한</th>
+									<th class="column-3">권한</th>
 								</tr>
 								<%
 									for(var i = 0; i< rows.length; i++){
@@ -370,12 +370,12 @@
 									<td class="column-1"><%=oneUser.C_id%></td>
 									<td class="column-2"><%=oneUser.name%></td>
 									<td class="column-3"><%=oneUser.age%></td>
-									<td class="column-4"><%=oneUser.sex%></td>
-									<td class="column-5"><%=oneUser.address%></td>
+									<td class="column-3"><%=oneUser.sex%></td>
+									<td class="column-3"><%=oneUser.address%></td>
 									<td class="column-6"><%=oneUser.phoneNO%></td>
-									<td class="column-7"><%=oneUser.password%></td>
+									<td class="column-3"><%=oneUser.password%></td>
 									<td class="column-8"><%=oneUser.email%></td>
-									<td class="column-9">
+									<td class="column-3">
 										<%if(oneUser.author == 'c'){%> 구매자</td>
 										<%}else if(oneUser.author == 's'){%> 판매자</td>
 										<%}else{%> 관리자</td>

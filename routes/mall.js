@@ -103,5 +103,19 @@ router.post('/join', function(req, res, next) {
 		});
 	});
 });
+/*회원관리 get method*/
+router.get('/user_manage', function(req, res, next) {
+	pool.getConnection(function(err, connection){
+		if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
+		var sql = "SELECT * FROM customer UNION SELECT * FROM seller order by C_id";
+		connection.query(sql, function(err, rows){
+			if(err) console.error("로그인sql err",err);
+
+			res.render('user_manage',{rows: rows, session: req.session});
+			connection.release();
+		});
+	});	
+});
+
 
 module.exports = router;

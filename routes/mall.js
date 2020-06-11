@@ -2,6 +2,17 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
+var multer = require('multer'); //multer 모듈 이용
+var storage = multer.diskStorage({ //저장될 경로와 이름을 지정하는 storage
+  destination: function(req, file, cb){
+    cb(null,'./public/images/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+var upload = multer({storage: storage}); //저장
+
 var pool = mysql.createPool({
 	connectionLimit: 5,
 	host: 'localhost',
@@ -103,6 +114,7 @@ router.post('/join', function(req, res, next) {
 		});
 	});
 });
+
 /*회원관리 get method*/
 router.get('/user_manage', function(req, res, next) {
 	pool.getConnection(function(err, connection){
@@ -121,7 +133,7 @@ router.get('/user_manage', function(req, res, next) {
 router.get('/product_manage',function(req, res, next){
 	
 	pool.getConnection(function (err, connection){
-		var sqlproduct = "SELECT Item.name, type, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
+		var sqlproduct = "SELECT Item.name, type, img, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
 		connection.query(sqlproduct, req.session.name, function(err, rows){
 			if(err) console.error("err : " + err);
 			else res.render('product_manage',{session: req.session, rows: rows});
@@ -130,6 +142,40 @@ router.get('/product_manage',function(req, res, next){
 		});
 	});
 });
+
+/*상품추가 get method*/
+router.get('/product_add', function(req, res, next) {
+  res.render('product_add',{session: req.session});
+});
+
+/*상품추가 post method*/
+router.post('/product_add', upload.single("img"), function(req, res, next) {
+	var img = req.file.originalname;
+	var name = req.body.name;
+	var price = req.body.price;
+	var type = req.body.type;
+	var category = req.body.category;
+	var brand = req.body.brand;
+	var newDate = new Date();
+	var date = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+	var cnt = req.body.cnt;
+	var ses_name = req.session.name;
+	var datas = [img,name,type,category,brand,date,price,cnt,ses_name];
+
+	var sql ="insert into item(img,name,type,category,brand,date,price,cnt,S_id) values (?,?,?,?,?,?,?,?,(SELECT S_id from seller where name = ?))";
+	pool.getConnection(function(err, connection){
+		connection.query(sql,datas, function(err, row){
+			if(err) console.error(err);
+			else{
+				console.log("회원정보 조회 : ", row);
+				console.log("성공!!!!!!!!!!!", date);
+				res.send("<script>alert('상품등록이 완료되었습니다.');location.href='/mall/product_manage';</script>");
+			}
+			connection.release();
+		});
+	});	
+});
+
 /*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {
 	
@@ -156,4 +202,6 @@ router.get('/myaccount', function(req, res, next) {
 router.get('/myaccount_update', function(req, res, next) {
   res.render('myaccount_update');
 });
+
+
 module.exports = router;

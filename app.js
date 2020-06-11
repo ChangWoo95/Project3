@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var date = require('date-utils');
 var mallRouter = require('./routes/mall');
 var usersRouter = require('./routes/users');
 var app = express();
@@ -15,7 +15,7 @@ app.use(session({
 	resave: false,
 	saveUninitialized: true,
   cookie : { // 쿠키에 들어가는 세션 ID값의 옵션
-        maxAge : 1000 * 60 * 10 // 10분까지 유지
+        maxAge : 1000 * 60 * 60 // 10분까지 유지
     }
 }));
 // view engine setup

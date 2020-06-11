@@ -7,7 +7,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#'
+	password: 'dl@3006733'
 });
 
 /* GET home page. */
@@ -117,5 +117,20 @@ router.get('/user_manage', function(req, res, next) {
 	});	
 });
 
+
+router.get('/product_manage',function(req, res, next){
+	
+	pool.getConnection(function (err, connection){
+
+		var sqlproduct = "SELECT I_id, name, type, category, brand, date, price, cnt, S_id FROM Item";
+		connection.query(sqlproduct, function(err, rows){
+			if(err) console.error("err : " + err);
+			console.log("rows : " + JSON.stringify(rows));
+
+			res.render('product_manage',{session: req.session, rows: rows});
+			connection.release();
+		});
+	});
+});
 
 module.exports = router;

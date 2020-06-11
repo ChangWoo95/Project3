@@ -59,29 +59,6 @@ router.get('/logout', function(req, res, next) {
 	res.redirect('/mall');
 });
 
-<<<<<<< HEAD
-router.get('/myaccount', function(req, res, next) {
-  var email  = req.body.email;
-
-  pool.getConnection(function(err, connection)
-  {
-  	  var sql = "select name, age, sex, address, phoneNO, password, email from Seller";
-	  connection.query(sql, [email], function(err, row)
-	  {
-	  	  if(err) console.error(err);
-		  console.log("회원정보 조회 : ", row);
-		  res.render('myaccount',{row: row[0]});
-		  connection.release();
-	  });
-  });
-});
-
-router.get('/myaccount_update', function(req, res, next) {
-  res.render('myaccount_update');
-});
-
-module.exports = router;
-=======
 /*회원가입 get method*/
 router.get('/join', function(req, res, next) {
 	res.render('join');
@@ -119,5 +96,24 @@ router.post('/join', function(req, res, next) {
 	});
 });
 
+router.get('/myaccount', function(req, res, next) {
+  var email  = req.body.email;
+
+  pool.getConnection(function(err, connection)
+  {
+  	  var sql = "select name, age, sex, address, phoneNO, password, email from Seller";
+	  connection.query(sql, [email], function(err, row)
+	  {
+	  	  if(err) console.error(err);
+		  console.log("회원정보 조회 : ", row);
+		  res.render('myaccount',{row: row[0]});
+		  connection.release();
+	  });
+  });
+});
+
+router.get('/myaccount_update', function(req, res, next) {
+  res.render('myaccount_update');
+});
+
 module.exports = router;
->>>>>>> root_Project3/master

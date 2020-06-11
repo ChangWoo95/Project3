@@ -353,11 +353,11 @@
 	<form class="bg0 p-t-75 p-b-85">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
+				<div class="col-lg-9 col-xl-9 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
-							<table id="user1" name="user1" class="table-shopping-cart" >
-								<tr class="table_head">
+							<table id="user1" name="user1" class="table-shopping-cart" border="2">
+								<!--<tr class="table_head">
 									<th class="column-1">이름</th>
 									<th class="column-2">나이</th>
 									<th class="column-3">성별</th>
@@ -374,6 +374,34 @@
 									<td class="column-5"><%=row.phoneNO%></td>
 									<td class="column-6"><%=row.password%></td>
 									<td class="column-7"><%=row.email%></td>
+								</tr>-->
+								<tr>
+									<th class="column-3" style="color:blue"><이름></th>
+									<td class="column-3"><%=row.name%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><나이></th>
+									<td class="column-3"><%=row.age%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><성별></th>
+									<td class="column-3"><%=row.sex%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><거주지></th>
+									<td class="column-3"><%=row.address%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><전화번호></th>
+									<td class="column-3"><%=row.phoneNO%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><비밀번호></th>
+									<td class="column-3"><%=row.password%></td>
+								</tr>
+								<tr>
+									<th class="column-3" style="color:blue"><이메일></th>
+									<td class="column-3"><%=row.email%></td
 								</tr>
 							</table>
 						</div>

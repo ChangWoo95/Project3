@@ -5,10 +5,9 @@
 	<link rel='stylesheet' href='/public/stylesheets/style.css'/>
 </head>
 <body>
-
+	<h1><%= title %></h1>
 	<form action="/mall/myaccount_update" method="get">
 		<table border="1">
-			<input type="hidden" name="idx" value="<%=row.idx%>"/>
 			<tr>
 				<td>이름</td>
 				<td><%=row.name%></td>

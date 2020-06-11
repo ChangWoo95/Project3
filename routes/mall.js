@@ -105,19 +105,25 @@ router.post('/join', function(req, res, next) {
 });
 
 router.get('/myaccount', function(req, res, next) {
-  var email  = req.body.email;
-
-  pool.getConnection(function(err, connection)
-  {
-  	  var sql = "select name, age, sex, address, phoneNO, password, email from Seller";
-	  connection.query(sql, [email], function(err, row)
-	  {
-	  	  if(err) console.error(err);
-		  console.log("회원정보 조회 : ", row);
-		  res.render('myaccount',{row: row[0]});
-		  connection.release();
-	  });
-  });
+	
+	pool.getConnection(function(err, connection)
+	{
+		var name = req.session.name; //회원이름
+		if(req.session.auth == 'c') //구매자 정보 조회
+			var sql = "select * from customer where name=?";
+		else if(req.session.auth == 's') //판매자 정보 조회
+			var sql = "select * from seller where name=?";
+		else //관리자 정보 조회
+			var sql = "select * from administrator where name=?";		
+		connection.query(sql,name, function(err, row)
+		{
+			if(err) console.error(err);
+			console.log("회원정보 조회 : ", row);
+			res.render('myaccount',{title: "회원정보 조회", row:row[0]});
+			connection.release();
+		});
+	});
+	
 });
 
 router.get('/myaccount_update', function(req, res, next) {

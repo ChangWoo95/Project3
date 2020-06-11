@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
@@ -7,7 +7,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#'
+	password: 'sw8836^^'
 });
 
 /* GET home page. */
@@ -116,7 +116,6 @@ router.get('/user_manage', function(req, res, next) {
 		});
 	});	
 });
-
 /*상품관리 get method*/
 router.get('/product_manage',function(req, res, next){
 	
@@ -130,6 +129,32 @@ router.get('/product_manage',function(req, res, next){
 			connection.release();
 		});
 	});
+});
+/*회원정보 조회 get method*/
+router.get('/myaccount', function(req, res, next) {
+	
+	pool.getConnection(function(err, connection)
+	{
+		var name = req.session.name; //회원이름
+		if(req.session.auth == 'c') //구매자 정보 조회
+			var sql = "select * from customer where name=?";
+		else if(req.session.auth == 's') //판매자 정보 조회
+			var sql = "select * from seller where name=?";
+		else //관리자 정보 조회
+			var sql = "select * from administrator where name=?";		
+		connection.query(sql,name, function(err, row)
+		{
+			if(err) console.error(err);
+			console.log("회원정보 조회 : ", row);
+			res.render('myaccount',{title: "회원정보 조회", row:row[0], session:req.session});
+			connection.release();
+		});
+	});
+	
+});
+
+router.get('/myaccount_update', function(req, res, next) {
+  res.render('myaccount_update');
 });
 
 module.exports = router;

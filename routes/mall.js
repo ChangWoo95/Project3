@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
    if(!req.session.logined){
         req.session.logined = false;
     }
-    console.log('확인:' + req.session.name + req.session.islogined);
+    console.log('확인:' + req.session.name + req.session.islogined + req.session.auth);
   res.render('index', { session : req.session });
 });
 
@@ -35,9 +35,9 @@ router.post('/login', function(req,res,next){
 		if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
 
 		/*user에 따른 조건문*/
-		if(user == 'administrator') var sql = "SELECT name FROM administrator where email=? and password=?";
-		else if(user == 'seller') var sql = "SELECT name FROM seller where email=? and password=?";
-		else var sql = "SELECT name FROM customer where email=? and password=?";
+		if(user == 'administrator') var sql = "SELECT name,author FROM administrator where email=? and password=?";
+		else if(user == 'seller') var sql = "SELECT name,author FROM seller where email=? and password=?";
+		else var sql = "SELECT name,author FROM customer where email=? and password=?";
 		
 		connection.query(sql, datas, function(err, rows){
 			if(err) console.error("로그인sql err",err);
@@ -45,7 +45,8 @@ router.post('/login', function(req,res,next){
 				res.send("<script>alert('등록되지 않은 회원이거나 비밀번호가 틀렸습니다.');history.back();</script>");
 			}
 			else{
-				req.session.name =rows[0].name; 
+				req.session.name = rows[0].name; 
+				req.session.auth = rows[0].author;
 				req.session.islogined = true;
 				res.redirect('/mall');
 			}
@@ -74,18 +75,25 @@ router.post('/join', function(req, res, next) {
 	console.log("전화번호 : ",phoneNO);
 	var password = req.body.password;
 	var email = req.body.email;
-	var datas = [name,age,sex,address,phoneNO,password,email];
-
 	var user = req.body.user;
 
 	pool.getConnection(function(err, connection){
 		if(err) console.error("커넥션 객체 얻어오기 에러 : ",err);
 	
 		/*user에 따른 조건문*/
-		if(user == 'administrator') var sql = "INSERT INTO administrator(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
-		else if(user == 'seller') var sql = "INSERT INTO seller(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
-		else var sql = "INSERT INTO customer(name,age,sex,address,phoneNO,password,email) values(?,?,?,?,?,?,?)";
-
+		if(user == 'administrator') {
+			var sql = "INSERT INTO administrator(name,age,sex,address,phoneNO,password,email,author) values(?,?,?,?,?,?,?,?)";
+			var auth = 'a';
+		}
+		else if(user == 'seller') {
+			var sql = "INSERT INTO seller(name,age,sex,address,phoneNO,password,email,author) values(?,?,?,?,?,?,?,?)";
+			var auth = 's';
+		}
+		else {
+			var sql = "INSERT INTO customer(name,age,sex,address,phoneNO,password,email,author) values(?,?,?,?,?,?,?,?)";
+			var auth = 'c';
+		}
+		var datas = [name,age,sex,address,phoneNO,password,email,auth];
 		
 		connection.query(sql,datas, function(err, rows){
 			if(err) console.error(err);

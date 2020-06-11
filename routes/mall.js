@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
@@ -7,7 +7,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^'
+	password: 'gosemvhs1~@#'
 });
 
 /* GET home page. */
@@ -116,6 +116,7 @@ router.get('/user_manage', function(req, res, next) {
 		});
 	});	
 });
+
 /*상품관리 get method*/
 router.get('/product_manage',function(req, res, next){
 	
@@ -123,10 +124,9 @@ router.get('/product_manage',function(req, res, next){
 		var sqlproduct = "SELECT Item.name, type, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
 		connection.query(sqlproduct, req.session.name, function(err, rows){
 			if(err) console.error("err : " + err);
-			//if(rows.length == 0) console.log("없음!!");
-			console.log("json 값", rows[RowDataPacket]);
-			res.render('product_manage',{session: req.session, rows: rows});
+			else res.render('product_manage',{session: req.session, rows: rows});
 			connection.release();
+
 		});
 	});
 });
@@ -156,5 +156,4 @@ router.get('/myaccount', function(req, res, next) {
 router.get('/myaccount_update', function(req, res, next) {
   res.render('myaccount_update');
 });
-
 module.exports = router;

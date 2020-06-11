@@ -557,7 +557,7 @@
 		</div>
 	</div>
 
-	<form class="bg0 p-t-75 p-b-85">
+	<form class="bg0 p-t-75 p-b-85" method="get">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
@@ -574,7 +574,7 @@
 									<th class="column-7">date</th>
 									<th class="column-8">cnt</th>
 								</tr>
-								<% if(JSON.stringify(rows) == undefined) {%>
+								<% if(rows.length == 0) {%>
 									<tr class="table_row">
 									<td class="column-1"></td>
 									<td class="column-2"></td>
@@ -603,11 +603,11 @@
 										}
 									}
 								%>
-
-
-
 							</table>
 						</div>
+						<input type="submit" value="추가" class="btn btn-outline-primary" onclick="javascript: form.action='/mall/product_add';"/>
+						<input type="submit" value="수정" class="btn btn-outline-secondary" onclick="javascript: form.action='/mall/product_add';"/>
+						<input type="submit" value="삭제" class="btn btn-outline-danger" onclick="javascript: form.action='/mall/product_add';"/>
 					</div>
 				</div>
 			</div>

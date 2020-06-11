@@ -117,7 +117,21 @@ router.get('/user_manage', function(req, res, next) {
 	});	
 });
 
+router.get('/product_manage',function(req, res, next){
+	
+	pool.getConnection(function (err, connection){
 
+		var sqlproduct = "SELECT I_id, name, type, category, brand, date, price, cnt, S_id FROM Item";
+		connection.query(sqlproduct, function(err, rows){
+			if(err) console.error("err : " + err);
+			console.log("rows : " + JSON.stringify(rows));
+
+			res.render('product_manage',{session: req.session, rows: rows});
+			connection.release();
+		});
+	});
+});
+/*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {
 	
 	pool.getConnection(function(err, connection)

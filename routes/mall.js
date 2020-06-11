@@ -133,7 +133,7 @@ router.get('/myaccount', function(req, res, next) {
 		{
 			if(err) console.error(err);
 			console.log("회원정보 조회 : ", row);
-			res.render('myaccount',{title: "회원정보 조회", row:row[0]});
+			res.render('myaccount',{title: "회원정보 조회", row:row[0], session:req.session});
 			connection.release();
 		});
 	});

@@ -60,7 +60,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
+						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
 							My Account
 						</a>
 
@@ -103,13 +103,7 @@
 								<a href="shoping-cart.html">Features</a>
 							</li>
 
-							<% if(session.auth == 'a'){ %>
 							<li><a href="/mall/user_manage">회원관리</a></li>
-							<% }else if(session.auth == 's'){ %>
-							<li><a href="/mall/product_manage">상품관리</a></li>
-							<%}else{%>
-							<li><a href="/mall/">Blog</a></li>
-							<% } %>
 
 							<li>
 								<a href="about.html">About</a>
@@ -185,7 +179,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
+						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
 							My Account
 						</a>
 
@@ -221,13 +215,7 @@
 					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
 				</li>
 
-				<% if(session.auth == 'a'){ %>
 				<li><a href="/mall/user_manage">회원관리</a></li>
-				<% }else if(session.auth == 's'){ %>
-				<li><a href="/mall/product_manage">상품관리</a></li>
-				<%}else{%>
-				<li><a href="/mall/">Blog</a></li>
-				<% } %>
 
 				<li>
 					<a href="about.html">About</a>
@@ -348,7 +336,7 @@
 			회원관리
 		</h2>
 	</section>	
-	
+
 	<!-- Shoping Cart -->
 	<form class="bg0 p-t-75 p-b-85">
 		<div class="container-fluid">

@@ -7,7 +7,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'dl@3006733'
+	password: 'gosemvhs1~@#'
 });
 
 /* GET home page. */
@@ -117,16 +117,15 @@ router.get('/user_manage', function(req, res, next) {
 	});	
 });
 
-
+/*상품관리 get method*/
 router.get('/product_manage',function(req, res, next){
 	
 	pool.getConnection(function (err, connection){
-
-		var sqlproduct = "SELECT I_id, name, type, category, brand, date, price, cnt, S_id FROM Item";
-		connection.query(sqlproduct, function(err, rows){
+		var sqlproduct = "SELECT Item.name, type, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
+		connection.query(sqlproduct, req.session.name, function(err, rows){
 			if(err) console.error("err : " + err);
-			console.log("rows : " + JSON.stringify(rows));
-
+			//if(rows.length == 0) console.log("없음!!");
+			console.log("json 값", rows[RowDataPacket]);
 			res.render('product_manage',{session: req.session, rows: rows});
 			connection.release();
 		});

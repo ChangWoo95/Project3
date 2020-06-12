@@ -2,12 +2,23 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
+var multer = require('multer'); //multer 모듈 이용
+var storage = multer.diskStorage({ //저장될 경로와 이름을 지정하는 storage
+  destination: function(req, file, cb){
+    cb(null,'./public/images/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+var upload = multer({storage: storage}); //저장
+
 var pool = mysql.createPool({
 	connectionLimit: 5,
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'dl@3006733'
+	password: 'sw8836^^'
 });
 
 /* GET home page. */
@@ -103,6 +114,7 @@ router.post('/join', function(req, res, next) {
 		});
 	});
 });
+
 /*회원관리 get method*/
 router.get('/user_manage', function(req, res, next) {
 	pool.getConnection(function(err, connection){
@@ -117,20 +129,155 @@ router.get('/user_manage', function(req, res, next) {
 	});	
 });
 
-
+/*상품관리 get method*/
 router.get('/product_manage',function(req, res, next){
 	
 	pool.getConnection(function (err, connection){
-
-		var sqlproduct = "SELECT I_id, name, type, category, brand, date, price, cnt, S_id FROM Item";
-		connection.query(sqlproduct, function(err, rows){
+		var sqlproduct = "SELECT Item.name, I_id, type, img, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
+		connection.query(sqlproduct, req.session.name, function(err, rows){
 			if(err) console.error("err : " + err);
-			console.log("rows : " + JSON.stringify(rows));
+			else res.render('product_manage',{session: req.session, rows: rows});
+			connection.release();
 
-			res.render('product_manage',{session: req.session, rows: rows});
+		});
+	});
+});
+
+/*상품추가 get method*/
+router.get('/product_add', function(req, res, next) {
+  res.render('product_add',{session: req.session});
+});
+
+/*상품추가 post method*/
+router.post('/product_add', upload.single("img"), function(req, res, next) {
+	var img = req.file.originalname;
+	var name = req.body.name;
+	var price = req.body.price;
+	var type = req.body.type;
+	var category = req.body.category;
+	var brand = req.body.brand;
+	var newDate = new Date();
+	var date = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+	var cnt = req.body.cnt;
+	var ses_name = req.session.name;
+	var datas = [img,name,type,category,brand,date,price,cnt,ses_name];
+
+	var sql ="insert into item(img,name,type,category,brand,date,price,cnt,S_id) values (?,?,?,?,?,?,?,?,(SELECT S_id from seller where name = ?))";
+	pool.getConnection(function(err, connection){
+		connection.query(sql,datas, function(err, row){
+			if(err) console.error(err);
+			else{
+				console.log("회원정보 조회 : ", row);
+				console.log("성공!!!!!!!!!!!", date);
+				res.send("<script>alert('상품등록이 완료되었습니다.');location.href='/mall/product_manage';</script>");
+			}
+			connection.release();
+		});
+	});	
+});
+/*상품수정 get method*/
+router.get('/product_update/:I_id',function(req, res, next)
+{
+	var I_id = req.params.I_id;
+
+	pool.getConnection(function(err, connection)
+	{
+		var sql = "select I_id, img, name, type, category, brand, price, cnt from Item where I_id=?";
+		connection.query(sql,[I_id],function(err,row)
+		{
+			if(err) console.error(err);
+			console.log("I_id 값 확인 : ", I_id);
+			console.log("상품 조회 결과 확인 : ", row);
+			res.render('product_update', {title:"상품수정", row:row[0], session:req.session});
+		});
+
+	});
+});
+/*상품수정 post method*/
+router.post('/product_update/:I_id', upload.single("image"), function(req, res, next)
+{
+	var I_id = req.params.I_id;
+	//var img = req.file.originalname;
+	var img = req.body.img;
+	var name = req.body.name;
+	var type = req.body.type;
+	var category = req.body.category;
+	var brand = req.body.brand;
+	var price = req.body.price;
+	var cnt = req.body.cnt;
+	console.log("I_id 값 확인 : ", I_id);
+	pool.getConnection(function(err, connection)
+	{
+		var sql = "update Item set img=?, name=?, type=?, category=?, brand=?, price=?, cnt=? where I_id=?";
+		connection.query(sql,[img, name, type, category, brand, price, cnt, I_id], function(err, result)
+		{
+			console.log(result);
+			if(err) console.error("글 수정 중 에러 발생 err : ", err);
+			res.redirect('/mall/product_manage');
 			connection.release();
 		});
 	});
+});
+
+/*상품삭제 get method*/
+router.get('/product_delete/:I_id', function(req, res, next) {
+  res.render('product_delete',{row: row, session: req.session});
+});
+
+/*상품삭제 post method*/
+router.post('/product_delete/:I_id', function(req, res, next)
+{
+	var I_id = req.params.I_id;
+	var password = req.session.password;
+	var datas = [I_id, password];
+
+	pool.getConnection(function(err, connection)
+	{
+		var sql = "delete from Item where idx=? and passwd=?";
+		connection.query(sql,datas, function(err, result)
+		{
+			console.log(result);
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+
+			if(result.affectedRows == 0)
+			{
+				res.send("<script>alert('패스워드가 일치하지 않거나, 잘못된 요청으로 인해 값이 변경되지 않았습니다.');history.back();</script>");
+			}
+			else
+			{
+				res.redirect('/board/list/1');
+			}
+
+			connection.release();
+		});
+	});
+});
+
+/*회원정보 조회 get method*/
+router.get('/myaccount', function(req, res, next) {
+	
+	pool.getConnection(function(err, connection)
+	{
+		var name = req.session.name; //회원이름
+		if(req.session.auth == 'c') //구매자 정보 조회
+			var sql = "select * from customer where name=?";
+		else if(req.session.auth == 's') //판매자 정보 조회
+			var sql = "select * from seller where name=?";
+		else //관리자 정보 조회
+			var sql = "select * from administrator where name=?";		
+		connection.query(sql,name, function(err, row)
+		{
+			if(err) console.error(err);
+			console.log("회원정보 조회 : ", row);
+			res.render('myaccount',{title: "회원정보 조회", row:row[0], session:req.session});
+			connection.release();
+		});
+	});
+	
+});
+
+router.get('/myaccount_update', function(req, res, next) {
+  res.render('myaccount_update');
 });
 
 

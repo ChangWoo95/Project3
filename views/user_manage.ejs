@@ -60,7 +60,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
+						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
 							My Account
 						</a>
 
@@ -103,13 +103,7 @@
 								<a href="shoping-cart.html">Features</a>
 							</li>
 
-							<% if(session.auth == 'a'){ %>
 							<li><a href="/mall/user_manage">회원관리</a></li>
-							<% }else if(session.auth == 's'){ %>
-							<li><a href="/mall/product_manage">상품관리</a></li>
-							<%}else{%>
-							<li><a href="/mall/">Blog</a></li>
-							<% } %>
 
 							<li>
 								<a href="about.html">About</a>
@@ -185,7 +179,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
+						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
 							My Account
 						</a>
 
@@ -221,13 +215,7 @@
 					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
 				</li>
 
-				<% if(session.auth == 'a'){ %>
 				<li><a href="/mall/user_manage">회원관리</a></li>
-				<% }else if(session.auth == 's'){ %>
-				<li><a href="/mall/product_manage">상품관리</a></li>
-				<%}else{%>
-				<li><a href="/mall/">Blog</a></li>
-				<% } %>
 
 				<li>
 					<a href="about.html">About</a>
@@ -348,7 +336,7 @@
 			회원관리
 		</h2>
 	</section>	
-	
+
 	<!-- Shoping Cart -->
 	<form class="bg0 p-t-75 p-b-85">
 		<div class="container-fluid">
@@ -367,12 +355,12 @@
 									<th class="column-1">식별번호</th>
 									<th class="column-2">이름</th>
 									<th class="column-3">나이</th>
-									<th class="column-4">성별</th>
-									<th class="column-5">주소</th>
+									<th class="column-3">성별</th>
+									<th class="column-3">주소</th>
 									<th class="column-6">전화번호</th>
-									<th class="column-7">비밀번호</th>
+									<th class="column-3">비밀번호</th>
 									<th class="column-8">이메일(아이디)</th>
-									<th class="column-9">권한</th>
+									<th class="column-3">권한</th>
 								</tr>
 								<%
 									for(var i = 0; i< rows.length; i++){
@@ -382,12 +370,12 @@
 									<td class="column-1"><%=oneUser.C_id%></td>
 									<td class="column-2"><%=oneUser.name%></td>
 									<td class="column-3"><%=oneUser.age%></td>
-									<td class="column-4"><%=oneUser.sex%></td>
-									<td class="column-5"><%=oneUser.address%></td>
+									<td class="column-3"><%=oneUser.sex%></td>
+									<td class="column-3"><%=oneUser.address%></td>
 									<td class="column-6"><%=oneUser.phoneNO%></td>
-									<td class="column-7"><%=oneUser.password%></td>
+									<td class="column-3"><%=oneUser.password%></td>
 									<td class="column-8"><%=oneUser.email%></td>
-									<td class="column-9">
+									<td class="column-3">
 										<%if(oneUser.author == 'c'){%> 구매자</td>
 										<%}else if(oneUser.author == 's'){%> 판매자</td>
 										<%}else{%> 관리자</td>

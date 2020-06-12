@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<% if(session.auth != 's'){ %>
+	<script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
+<% } %>
 <html lang="en">
 <head>
 	<title>Product</title>
@@ -58,7 +61,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
+						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
 							My Account
 						</a>
 
@@ -77,7 +80,7 @@
 				<nav class="limiter-menu-desktop container">
 					
 					<!-- Logo desktop -->		
-					<a href="#" class="logo">
+					<a href="/mall" class="logo">
 						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
 					</a>
 
@@ -85,7 +88,7 @@
 					<div class="menu-desktop">
 						<ul class="main-menu">
 							<li>
-								<a href="index.html">Home</a>
+								<a href="/mall">Home</a>
 								<ul class="sub-menu">
 									<li><a href="index.html">Homepage 1</a></li>
 									<li><a href="home-02.html">Homepage 2</a></li>
@@ -166,9 +169,9 @@
 		<div class="menu-mobile">
 			<ul class="topbar-mobile">
 				<li>
-					<div class="left-top-bar">
-						Free shipping for standard order over $100
-					</div>
+						<% if(session.islogined){ %>
+							<h2><%= session.name %>님 안녕하세요!</h2>
+						<% } %>
 				</li>
 
 				<li>
@@ -177,7 +180,7 @@
 							Help & FAQs
 						</a>
 
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
+						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
 							My Account
 						</a>
 
@@ -194,7 +197,7 @@
 
 			<ul class="main-menu-m">
 				<li>
-					<a href="index.html">Home</a>
+					<a href="/mall">Home</a>
 					<ul class="sub-menu-m">
 						<li><a href="index.html">Homepage 1</a></li>
 						<li><a href="home-02.html">Homepage 2</a></li>
@@ -213,9 +216,7 @@
 					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
 				</li>
 
-				<li>
-					<a href="blog.html">Blog</a>
-				</li>
+				<li><a href="/mall/product_manage">상품관리</a></li>
 
 				<li>
 					<a href="about.html">About</a>
@@ -551,19 +552,15 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
 
-	<!-- Shoping Cart -->	
-	<H3><a href="/mall/product_manage/write">New Product</a></H3>
-
-	
-	
-	<form class="bg0 p-t-75 p-b-85">
+	<form class="bg0 p-t-75 p-b-85" method="get">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+				<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
@@ -571,59 +568,38 @@
 									<th class="column-1">Product</th>
 									<th class="column-2"></th>
 									<th class="column-3">Price</th>
-									<th class="column-4">Quantity</th>
-									<th class="column-5">Total</th>
+									<th class="column-4">type</th>
+									<th class="column-5">category</th>
+									<th class="column-6">brand</th>
+									<th class="column-4">date</th>
+									<th class="column-5">cnt</th>
 								</tr>
-
+								<% if(rows.length == 0) {%>
+									<tr class="table_row">
+										<td colspan="8"><div style="text-align:center">등록된 상품이 없습니다.</div></td>
+									</tr>								
+								<%	}else {
+									for(var i = 0; i< rows.length; i++){
+									var oneUser = rows[i];
+								%>
 								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-04.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Fresh Strawberries</td>
-									<td class="column-3">$ 36.00</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-									</td>
-									<td class="column-5">$ 36.00</td>
+									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
+									<td class="column-1"><a href="/mall/product_update/<%=oneUser.I_id%>"><%=oneUser.name%></a></td>
+									<td class="column-3"><%=oneUser.price%></td>
+									<td class="column-4"><%=oneUser.type%></td>
+									<td class="column-5"><%=oneUser.category%></td>
+									<td class="column-6"><%=oneUser.brand%></td>
+									<td class="column-4"><%=oneUser.date%></td>
+									<td class="column-5"><%=oneUser.cnt%></td>
 								</tr>
-
-								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-05.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Lightweight Jacket</td>
-									<td class="column-3">$ 16.00</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-									</td>
-									<td class="column-5">$ 16.00</td>
-								</tr>
+								<%
+										}
+									}
+								%>
 							</table>
 						</div>
+						<input type="submit" value="추가" class="btn btn-outline-primary" onclick="javascript: form.action='/mall/product_add';"/>
+
 					</div>
 				</div>
 			</div>

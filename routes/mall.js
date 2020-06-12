@@ -135,7 +135,7 @@ router.get('/product_manage',function(req, res, next){
 	pool.getConnection(function (err, connection){
 		var sqlproduct = "SELECT Item.name, I_id, type, img, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
 		connection.query(sqlproduct, req.session.name, function(err, rows){
-			console.log("이름 : ",rows[0].img);
+			//console.log("이름 : ",rows[0].img);
 			if(err) console.error("err : " + err);
 			else res.render('product_manage',{session: req.session, rows: rows});
 			connection.release();
@@ -259,7 +259,8 @@ router.post('/product_delete/:I_id', function(req, res, next)
 	var I_id = req.params.I_id;
 	var password = req.body.password;
 	var name = req.session.name;
-
+	var org = './public/images/'+ req.body.org;
+	console.log("test ",org);
 	var datas = [I_id, password,name];
 	console.log("패스워드 : ", req.body.password);
 	pool.getConnection(function(err, connection)
@@ -276,6 +277,9 @@ router.post('/product_delete/:I_id', function(req, res, next)
 			}
 			else
 			{
+				fs.unlink(org, function (re) {
+        			if (re) console.log(re);
+        		});				
 				res.redirect('/mall/product_manage');
 			}
 

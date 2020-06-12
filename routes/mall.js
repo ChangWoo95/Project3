@@ -179,7 +179,7 @@ router.post('/product_add', upload.single("img"), function(req, res, next) {
 router.get('/product_update/:I_id',function(req, res, next)
 {
 	var I_id = req.params.I_id;
-
+	
 	pool.getConnection(function(err, connection)
 	{
 		var sql = "select I_id, img, name, type, category, brand, price, cnt from Item where I_id=?";
@@ -189,16 +189,17 @@ router.get('/product_update/:I_id',function(req, res, next)
 			console.log("I_id 값 확인 : ", I_id);
 			console.log("상품 조회 결과 확인 : ", row);
 			res.render('product_update', {title:"상품수정", row:row[0], session:req.session});
+
 		});
 
 	});
 });
 /*상품수정 post method*/
-router.post('/product_update/:I_id', upload.single("image"), function(req, res, next)
+router.post('/product_update/:I_id', upload.single("img"), function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	//var img = req.file.originalname;
-	var img = req.body.img;
+	var img = req.file.originalname;
+	//var img = req.body.img;
 	var name = req.body.name;
 	var type = req.body.type;
 	var category = req.body.category;
@@ -206,6 +207,9 @@ router.post('/product_update/:I_id', upload.single("image"), function(req, res, 
 	var price = req.body.price;
 	var cnt = req.body.cnt;
 	console.log("I_id 값 확인 : ", I_id);
+	console.log("originalname 확인 : ", img);
+	console.log("상품명 확인 : ", name);
+	console.log("이미지 확인 : ", img);
 	pool.getConnection(function(err, connection)
 	{
 		var sql = "update Item set img=?, name=?, type=?, category=?, brand=?, price=?, cnt=? where I_id=?";
@@ -221,19 +225,35 @@ router.post('/product_update/:I_id', upload.single("image"), function(req, res, 
 
 /*상품삭제 get method*/
 router.get('/product_delete/:I_id', function(req, res, next) {
-  res.render('product_delete',{row: row, session: req.session});
+	var I_id = req.params.I_id;
+
+	pool.getConnection(function(err, connection)
+	{
+		if(err) console.error("커넥션 객체 얻어오기 에러 : ", err);
+
+		var sql = "select * from Item where I_id=?";
+		connection.query(sql,[I_id],function(err,rows)
+		{
+			if(err) console.error(err);
+			console.log("delete할 상품 조회 결과 확인 : ", rows);
+			res.render('product_delete', {title:"상품 삭제", row:rows[0], session:req.session});
+			connection.release();
+		});
+	});
 });
 
 /*상품삭제 post method*/
 router.post('/product_delete/:I_id', function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	var password = req.session.password;
-	var datas = [I_id, password];
+	var password = req.body.password;
+	var name = req.session.name;
 
+	var datas = [I_id, password,name];
+	console.log("패스워드 : ", req.body.password);
 	pool.getConnection(function(err, connection)
 	{
-		var sql = "delete from Item where idx=? and passwd=?";
+		var sql = "delete from item where I_id=? and S_id = (select S_id from seller where password=? and name = ?)";
 		connection.query(sql,datas, function(err, result)
 		{
 			console.log(result);
@@ -245,7 +265,7 @@ router.post('/product_delete/:I_id', function(req, res, next)
 			}
 			else
 			{
-				res.redirect('/board/list/1');
+				res.redirect('/mall/product_manage');
 			}
 
 			connection.release();

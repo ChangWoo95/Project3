@@ -571,33 +571,26 @@
 									<th class="column-4">type</th>
 									<th class="column-5">category</th>
 									<th class="column-6">brand</th>
-									<th class="column-7">date</th>
-									<th class="column-8">cnt</th>
+									<th class="column-4">date</th>
+									<th class="column-5">cnt</th>
 								</tr>
 								<% if(rows.length == 0) {%>
 									<tr class="table_row">
-									<td class="column-1"></td>
-									<td class="column-2"></td>
-									<td class="column-3">등록된</td>
-									<td class="column-4">상품이</td>
-									<td class="column-5"></td>
-									<td class="column-6">없습니다.</td>
-									<td class="column-7"></td>
-									<td class="column-8"></td>
+										<td colspan="8"><div style="text-align:center">등록된 상품이 없습니다.</div></td>
 									</tr>								
 								<%	}else {
 									for(var i = 0; i< rows.length; i++){
 									var oneUser = rows[i];
 								%>
 								<tr class="table_row">
-									<td><img src="/images/<%=oneUser.img%>" alt="사진 없음" width="300" height="300"/></td>
-									<td class="column-1"><%=oneUser.name%></td>
-									<td class="column-2"><%=oneUser.type%></td>
-									<td class="column-3"><%=oneUser.category%></td>
-									<td class="column-4"><%=oneUser.brand%></td>
-									<td class="column-5"><%=oneUser.date%></td>
-									<td class="column-6"><%=oneUser.price%></td>
-									<td class="column-7"><%=oneUser.cnt%></td>
+									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
+									<td class="column-1"><a href="/mall/product_update/<%=oneUser.I_id%>"><%=oneUser.name%></a></td>
+									<td class="column-3"><%=oneUser.price%></td>
+									<td class="column-4"><%=oneUser.type%></td>
+									<td class="column-5"><%=oneUser.category%></td>
+									<td class="column-6"><%=oneUser.brand%></td>
+									<td class="column-4"><%=oneUser.date%></td>
+									<td class="column-5"><%=oneUser.cnt%></td>
 								</tr>
 								<%
 										}
@@ -606,8 +599,7 @@
 							</table>
 						</div>
 						<input type="submit" value="추가" class="btn btn-outline-primary" onclick="javascript: form.action='/mall/product_add';"/>
-						<input type="submit" value="수정" class="btn btn-outline-secondary" onclick="javascript: form.action='/mall/product_add';"/>
-						<input type="submit" value="삭제" class="btn btn-outline-danger" onclick="javascript: form.action='/mall/product_add';"/>
+
 					</div>
 				</div>
 			</div>

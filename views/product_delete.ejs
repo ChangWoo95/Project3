@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
-<% if(!session.islogined){ %>
-	<script>alert('로그인 후 이용해주세요');location.href='/mall/';</script>
+<% if(session.auth != 's'){ %>
+	<script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
 <% } %>
 <html lang="en">
 <head>
-	<title><%=title%></title>
+	<title>Product</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -25,12 +25,25 @@
 	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+<style> 
+	#btn1{ border-top-left-radius: 5px; border-bottom-left-radius: 5px; margin-right:-4px; 
+		   border-top-right-radius: 5px; border-bottom-right-radius: 5px;}  
+	#btn_g button{ border: 1px solid skyblue; background-color: rgba(0,0,0,0); color: skyblue; padding: 5px; }
+	#btn_g button:hover{ color:white; background-color: skyblue; } 
+</style>
+
 </head>
 <body class="animsition">
 	
@@ -48,14 +61,9 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<% if(session.islogined){ %>
 						<a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
 							Logout
-						<% }else{ %>
-						<a href="/mall/login" class="flex-c-m trans-04 p-lr-25">
-							Login
 						</a>
-						<% } %>
 						<a href="#" class="flex-c-m trans-04 p-lr-25">
 							Help & FAQs
 						</a>
@@ -86,9 +94,9 @@
 					<!-- Menu desktop -->
 					<div class="menu-desktop">
 						<ul class="main-menu">
-							<li class="active-menu">
+							<li>
 								<a href="/mall">Home</a>
-								 <ul class="sub-menu">
+								<ul class="sub-menu">
 									<li><a href="index.html">Homepage 1</a></li>
 									<li><a href="home-02.html">Homepage 2</a></li>
 									<li><a href="home-03.html">Homepage 3</a></li>
@@ -102,15 +110,9 @@
 							<li class="label1" data-label1="hot">
 								<a href="shoping-cart.html">Features</a>
 							</li>
-
-							<% if(session.auth == 'a'){ %>
-							<li><a href="/mall/user_manage">회원관리</a></li>
-							<% }else if(session.auth == 's'){ %>
-							<li><a href="/mall/product_manage">상품관리</a></li>
-							<%}else{%>
-							<li><a href="/mall/">Blog</a></li>
-							<% } %>
-
+							<li class="active-menu">
+								<a href="/mall/product_manage">상품관리</a>
+							</li>
 							<li>
 								<a href="about.html">About</a>
 							</li>
@@ -143,7 +145,7 @@
 		<div class="wrap-header-mobile">
 			<!-- Logo moblie -->		
 			<div class="logo-mobile">
-				<a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+				<a href="index.html"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
 			</div>
 
 			<!-- Icon header -->
@@ -221,13 +223,7 @@
 					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
 				</li>
 
-				<% if(session.auth == 'a'){ %>
-				<li><a href="/mall/user_manage">회원관리</a></li>
-				<% }else if(session.auth == 's'){ %>
 				<li><a href="/mall/product_manage">상품관리</a></li>
-				<%}else{%>
-				<li><a href="/mall/">Blog</a></li>
-				<% } %>
 
 				<li>
 					<a href="about.html">About</a>
@@ -341,64 +337,53 @@
 		</div>
 	</div>
 
+	<p>><h1 align="center">상품 삭제</h1></p>
 
-	<!-- Title page -->
-	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('images/bg-02.jpg');">
-		<h2 class="ltext-105 cl0 txt-center">
-			<%=title%>
-		</h2>
-	</section>	
-	
-	<!-- Shoping Cart -->
-	<form class="bg0 p-t-75 p-b-85">
-		<div class="container-fluid">
+	<form class="bg0 p-t-75 p-b-85" enctype="multipart/form-data" action="/mall/product_add" method="post">
+		<div class="container">
 			<div class="row">
-				<div class="col-lg-9 col-xl-9 m-lr-auto m-b-50">
+				<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
-							<table id="user1" name="user1" class="table-shopping-cart" border="2">
-
+							<table class="table-shopping-cart">
 								<tr>
-									<th class="column-3" style="color:blue"><이름></th>
-									<td class="column-3"><%=row.name%></td>
+									<th class="column-3">Password</th>
+									<td><input style="border:1px solid #808080;" type="password" name="password" id="password"/></td>
 								</tr>
+	
 								<tr>
-									<th class="column-3" style="color:blue"><나이></th>
-									<td class="column-3"><%=row.age%></td>
-								</tr>
-								<tr>
-									<th class="column-3" style="color:blue"><성별></th>
-									<td class="column-3"><%=row.sex%></td>
-								</tr>
-								<tr>
-									<th class="column-3" style="color:blue"><거주지></th>
-									<td class="column-3"><%=row.address%></td>
-								</tr>
-								<tr>
-									<th class="column-3" style="color:blue"><전화번호></th>
-									<td class="column-3"><%=row.phoneNO%></td>
-								</tr>
-								<tr>
-									<th class="column-3" style="color:blue"><비밀번호></th>
-									<td class="column-3"><%=row.password%></td>
-								</tr>
-								<tr>
-									<th class="column-3" style="color:blue"><이메일></th>
-									<td class="column-3"><%=row.email%></td>
-								</tr>
+									<td colspan="2">
+										<div id="btn_g">
+											<button id="btn1"type="submit">확인</button>
+										</div>
+									</td>
+								</tr>																	
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</form>	
-	
+	</form>
+
+	<script>
+		function onWriteSubmit()
+		{
+			if( $("#password").val().trim() == "")
+			{
+				var message = "패스워드를 입력해 주세요";
+				$("#password").val("");
+				$("#password").focus();
+				alert(message);
+				return false;
+			}
+		}
+	</script>
 		
 
 	<!-- Footer -->
 	<footer class="bg3 p-t-75 p-b-32">
-		<div class="container">
+		<div class="container"></div>
 			<div class="row">
 				<div class="col-sm-6 col-lg-3 p-b-50">
 					<h4 class="stext-301 cl0 p-b-30">

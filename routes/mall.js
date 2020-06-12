@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-
+var fs = require('fs');
 var multer = require('multer'); //multer 모듈 이용
 var storage = multer.diskStorage({ //저장될 경로와 이름을 지정하는 storage
   destination: function(req, file, cb){
@@ -18,7 +18,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^'
+	password: 'gosemvhs1~@#'
 });
 
 /* GET home page. */
@@ -135,6 +135,7 @@ router.get('/product_manage',function(req, res, next){
 	pool.getConnection(function (err, connection){
 		var sqlproduct = "SELECT Item.name, I_id, type, img, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
 		connection.query(sqlproduct, req.session.name, function(err, rows){
+			console.log("이름 : ",rows[0].img);
 			if(err) console.error("err : " + err);
 			else res.render('product_manage',{session: req.session, rows: rows});
 			connection.release();
@@ -163,6 +164,7 @@ router.post('/product_add', upload.single("img"), function(req, res, next) {
 	var datas = [img,name,type,category,brand,date,price,cnt,ses_name];
 
 	var sql ="insert into item(img,name,type,category,brand,date,price,cnt,S_id) values (?,?,?,?,?,?,?,?,(SELECT S_id from seller where name = ?))";
+	
 	pool.getConnection(function(err, connection){
 		connection.query(sql,datas, function(err, row){
 			if(err) console.error(err);
@@ -175,11 +177,12 @@ router.post('/product_add', upload.single("img"), function(req, res, next) {
 		});
 	});	
 });
+
 /*상품수정 get method*/
 router.get('/product_update/:I_id',function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	
+
 	pool.getConnection(function(err, connection)
 	{
 		var sql = "select I_id, img, name, type, category, brand, price, cnt from Item where I_id=?";
@@ -189,27 +192,35 @@ router.get('/product_update/:I_id',function(req, res, next)
 			console.log("I_id 값 확인 : ", I_id);
 			console.log("상품 조회 결과 확인 : ", row);
 			res.render('product_update', {title:"상품수정", row:row[0], session:req.session});
-
 		});
 
 	});
 });
+
 /*상품수정 post method*/
 router.post('/product_update/:I_id', upload.single("img"), function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	var img = req.file.originalname;
-	//var img = req.body.img;
+	var org = req.body.org;
+	var chk = req.body.chk;
+	
+	if(chk == 1) var img = org; //들어온 이미지가 없음
+	else {
+		org = './public/images/' + org;
+		var img = req.file.originalname; //들어온 이미지가 있음
+		fs.unlink(org, function (re) {
+        	if (re) console.log(re);
+        });
+	}
+
 	var name = req.body.name;
 	var type = req.body.type;
 	var category = req.body.category;
 	var brand = req.body.brand;
 	var price = req.body.price;
 	var cnt = req.body.cnt;
+
 	console.log("I_id 값 확인 : ", I_id);
-	console.log("originalname 확인 : ", img);
-	console.log("상품명 확인 : ", name);
-	console.log("이미지 확인 : ", img);
 	pool.getConnection(function(err, connection)
 	{
 		var sql = "update Item set img=?, name=?, type=?, category=?, brand=?, price=?, cnt=? where I_id=?";

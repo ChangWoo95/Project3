@@ -337,7 +337,16 @@
       </div>
    </div>
 
-   <p>><h1 align="center">상품 수정</h1></p>
+   <br><br><h1 align="center">상품 수정</h1>
+
+   <script>
+      function changeValue(obj){
+         var k = 0;
+         $('input[name=chk]').val(k);
+         alert("이거까지는 성공!");
+      }
+   </script>
+
 
    <form class="bg0 p-t-75 p-b-85" enctype="multipart/form-data" method="post">
       <div class="container">
@@ -348,7 +357,9 @@
                      <table class="table-shopping-cart">
                         <tr>
                            <th class="column-3">Image</th>
-                           <td><input style="border:1px solid #808080;" type="file" name="img" id="img" value="<%=row.name%>"/></td>
+                            <td><input style="border:1px solid #808080;" type="file" name="img" id="img" onchange="changeValue(this)"/></td>
+                            <td><input type="hidden" name="org" value="<%=row.img%>"/><td>
+                            <td><input type="hidden" name="chk" value="1" /><td>
                         </tr>
                         <tr>
                            <th class="column-3">name</th>
@@ -381,25 +392,15 @@
                               </div>
                            </td>
                         </tr>                                                   
-                     </table>
+                     </table>                    
                   </div>
-<<<<<<< HEAD
-=======
-				  
->>>>>>> 6126606af0a40fe15e1efb5c6608e3fa64d51b55
                </div>
-			   <a href="/mall/product_delete/<%=row.I_id%>">삭제</a>
+                        <a href="/mall/product_delete/<%=row.I_id%>">삭제</a>   
             </div>
          </div>
       </div>
    </form>
-<<<<<<< HEAD
-                  <input type="submit" value="삭제" class="btn btn-outline-danger" onclick="location.href='/mall/product_delete/<%=row.I_id%>'"/>
-      
 
-=======
-   <!-- <input type="submit" value="삭제" class="btn btn-outline-danger" onclick="location.href='/mall/product_delete/<%=row.I_id%>'"/> -->
->>>>>>> 6126606af0a40fe15e1efb5c6608e3fa64d51b55
    <!-- Footer -->
    <footer class="bg3 p-t-75 p-b-32">
       <div class="container"></div>

@@ -584,7 +584,7 @@
 								%>
 								<tr class="table_row">
 									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
-									<td class="column-1"><%=oneUser.name%></td>
+									<td class="column-1"><a href="/mall/product_update/<%=oneUser.I_id%>"><%=oneUser.name%></a></td>
 									<td class="column-3"><%=oneUser.price%></td>
 									<td class="column-4"><%=oneUser.type%></td>
 									<td class="column-5"><%=oneUser.category%></td>
@@ -599,8 +599,7 @@
 							</table>
 						</div>
 						<input type="submit" value="추가" class="btn btn-outline-primary" onclick="javascript: form.action='/mall/product_add';"/>
-						<input type="submit" value="수정" class="btn btn-outline-secondary" onclick="javascript: form.action='/mall/product_add';"/>
-						<input type="submit" value="삭제" class="btn btn-outline-danger" onclick="javascript: form.action='/mall/product_add';"/>
+
 					</div>
 				</div>
 			</div>

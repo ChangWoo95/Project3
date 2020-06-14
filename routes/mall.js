@@ -18,7 +18,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^'
+	password: 'dl@3006733'
 });
 
 /* GET home page. */
@@ -129,6 +129,26 @@ router.get('/user_manage', function(req, res, next) {
 	});	
 });
 
+
+/*세일관리 get method*/
+router.get('/sale_manage', function(req, res, next) {
+	pool.getConnection(function(err, connection) {
+		var sqlsale = "SELECT name, I_id, type, category, brand, price, cnt FROM Item";
+		connection.query(sqlsale, function(err, rows) {
+			if(err) console.error("salesql err", err);
+			console.log("rows : " + JSON.stringify(rows));
+
+			res.render('sale_manage', {rows: rows, session: req.session});
+			connection.release();
+		});
+	});
+});
+
+
+
+
+
+
 /*상품관리 get method*/
 router.get('/product_manage',function(req, res, next){
 	
@@ -146,6 +166,27 @@ router.get('/product_manage',function(req, res, next){
 /*상품추가 get method*/
 router.get('/product_add', function(req, res, next) {
   res.render('product_add',{session: req.session});
+});
+
+
+router.post('/sale_manage', function(req, res, next) {
+	var I_id = req.body.I_id;
+	var name = req.body.name;
+	var price = req.body.price;
+	var cnt = req.body.cnt;
+	var data = [I_id, name, price, count];
+
+	var sqlsalelist = "insert into onsale(I_id, name, price, cnt) values(?,?,?,?)";
+	pool.getConnection(function(err, connection) {
+		
+		connection.query(sqlsalelist,data,function(err,rows) {
+			if(err) console.error("can't give salelist" + err);
+			console.log("rows : " + JSON.stringify(rows));
+
+			res.redirect('/sale_manage');
+			connection.release();
+		});
+	});
 });
 
 /*상품추가 post method*/

@@ -108,7 +108,7 @@
 							<% }else if(session.auth == 's'){ %>
 							<li><a href="/mall/product_manage">상품관리</a></li>
 							<%}else{%>
-							<li><a href="/mall/">Blog</a></li>
+							<li><a href="/mall/product">상품조회</a></li>
 							<% } %>
 
 							<li>
@@ -226,7 +226,7 @@
 				<% }else if(session.auth == 's'){ %>
 				<li><a href="/mall/product_manage">상품관리</a></li>
 				<%}else{%>
-				<li><a href="/mall/">Blog</a></li>
+				<li><a href="/mall/product">상품조회</a></li>
 				<% } %>
 
 				<li>
@@ -328,11 +328,11 @@
 					</div>
 
 					<div class="header-cart-buttons flex-w w-full">
-						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
+						<a href="/mall/cart" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
 							View Cart
 						</a>
 
-						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
+						<a href="/mall/check_out" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
 							Check Out
 						</a>
 					</div>

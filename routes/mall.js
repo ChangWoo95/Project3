@@ -18,13 +18,15 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#'
+	password: 'gosemvhs1~@#',
+	dateStrings: 'date',
+	multipleStatements: true
 });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-   if(!req.session.logined){
-        req.session.logined = false;
+   if(!req.session.islogined){
+        req.session.islogined = false;
     }
     console.log('확인:' + req.session.name + req.session.islogined + req.session.auth);
   res.render('index', { session : req.session });
@@ -313,6 +315,115 @@ router.get('/myaccount', function(req, res, next) {
 
 router.get('/myaccount_update', function(req, res, next) {
   res.render('myaccount_update');
+});
+
+/*상품보기 get method*/
+router.get('/product', function(req, res, next) {
+	var name = req.session.name;
+	pool.getConnection(function(err, connection){
+		var sql1 = "select * from item order by I_id;";
+		var sql2 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
+		connection.query(sql1+sql2,name, function(err, result){
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			else {
+				var sum = 0;
+				res.render('product',{session: req.session, rows: result[0], cart: result[1], sum: sum});
+			}
+			
+			connection.release();
+		});
+	});
+});
+
+/*상품조회 get method*/
+router.get('/product_detail/:I_id', function(req, res, next) {
+	
+	pool.getConnection(function(err, connection){
+		var num = req.params.I_id;
+		console.log("확인1 : ",num);
+		var sql = "select * from item where I_id=?;";
+		var sql2 = "select review.*,customer.name from review,customer where review.I_id=? and review.C_id = customer.C_id;";
+		console.log("확인2 : ",num);
+		var datas = [num,num];
+
+		connection.query(sql+sql2, datas, function(err, rows){
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			else {
+				console.log(rows[0][0].name);
+				console.log(rows[1].length);
+				res.render('product_detail',{session: req.session, row: rows[0][0], review: rows[1]});
+			}
+	
+			connection.release();
+		});
+	});
+});
+
+/*상품조회 post method*/
+router.post('/product_detail/:I_id', function(req, res, next) {
+	var id = req.params.I_id;
+	var name = req.session.name;
+	var val = req.body.num_product;
+
+	pool.getConnection(function(err, connection){
+		var datas = [id,name,val];
+		var sql = "insert into cart(I_id,C_id,val) values (?,(SELECT C_id from customer where name = ?),?)";
+
+		connection.query(sql, datas, function(err, row){
+			if(err) console.error("장바구니 insert err : ", err);
+			else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/product';</script>");
+			connection.release();
+		});
+	});
+});
+
+router.get('/cart', function(req, res, next) {
+	pool.getConnection(function(err, connection){
+		var name = req.session.name;
+		var sql = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
+		connection.query(sql,name, function(err, result){
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			else {
+				var sum = 0;
+				res.render('cart',{session: req.session, cart: result, sum: sum});
+			}
+			
+			connection.release();
+		});
+	});
+});
+
+router.post('/cart', function(req, res, next) {
+	var i = 0;
+	/*var _chk1 = eval("req.body.chk" +0);
+	var _chk2 = eval("req.body.chk" +1);
+	console.log(_chk1,_chk2);*/
+	var datas= [];
+	var sql;
+
+	var i =0;
+	while(eval("req.body.chk" +i) =='on'){
+		var id2 = ""
+		var id = eval("req.body.i_id"+i);
+		console.log(i+" : "+id);
+		i++;
+	}
+	//var sql = "delete from cart where I_id=? and S_id = (select S_id from seller where password=? and name = ?)";
+	//var chk = req.body.del_chk;
+	//console.log("확인 :",chk);
+	/*pool.getConnection(function(err, connection){
+		var name = req.session.name;
+		var sql = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
+		connection.query(sql,name, function(err, result){
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			else {
+				var sum = 0;
+				res.render('cart',{session: req.session, cart: result, sum: sum});
+			}
+			
+			connection.release();
+		});
+	});*/
 });
 
 

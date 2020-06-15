@@ -399,7 +399,7 @@
 									</td>
 									<td class="column-3"><center><%=cart[i].name%></center></td>
 									<td class="column-3"><script>numberWithCommas(<%=cart[i].price%>);</script></td>
-									<td class="column-3"><center><%=cart[i].val%></center></td>
+									<td class="column-3"><center><%=cart[i].val%><input type="hidden" id="chk_val" name="chk_val" value="<%=cart[i].val%>"/></center></td>
 									<td class="column-5"><script>numberWithCommas(<%= (cart[i].val * cart[i].price)%>);</script></td>
 								</tr>
 							<% } %>								

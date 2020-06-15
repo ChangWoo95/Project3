@@ -399,7 +399,7 @@ router.post('/cart', function(req, res, next) {
 	var datas = [];
 	var sql="";
 	
-	if(ischecked.isArray){
+	if(Array.isArray(ischecked)){
 		ischecked.forEach(function (item, index, array) {
 			datas.push(item);
 			sql += "delete from cart where I_id=?;";

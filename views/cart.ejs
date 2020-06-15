@@ -35,11 +35,38 @@
 		function numberWithCommas(x) {
     		document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
 		}
-		function frmsubmit(){
-			if(confirm("장바구니에서 정말 삭제하시겠습니까?")) return true;
+
+		function frmcheckout(){
+			if(confirm("결제하시겠습니까?")) {
+				$("#frm").attr("action", "/mall/check_out");
+				//document.frm.action = '/mall/check_out';
+				//alert(form.action);
+				document.frm.submit();
+			}
 			else return false;
-		}        
+		}  
+
+		function frmsubmit(){
+        	var is_chk = false;
+        	var arr_chk = document.getElementsByName("chk");
+        	for(var i=0;i<arr_chk.length;i++){
+            	if(arr_chk[i].checked == true) {
+            	    is_chk = true;
+            	    break;
+            	}
+        	}
+        	if(!is_chk){
+            	alert("한 개 이상을 선택해주세요");
+            	return false;
+        	}
+        	else{
+        		$("#frm").attr("action", "/mall/cart");
+        		//document.frm.action = '/mall/cart';
+        		document.frm.submit();
+        	}
+		}      
     </script>
+
 </head>
 <body class="animsition">
 	
@@ -344,12 +371,11 @@
 		
 
 	<!-- Shoping Cart -->
-	<!--<form class="bg0 p-t-75 p-b-85">-->
+	 <form class="bg0 p-t-75 p-b-85" method="post" id="frm">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<form action="/mall/cart" method="post" onsubmit="return frmsubmit();">
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
 								<tr class="table_head">
@@ -363,15 +389,14 @@
 							<% for(var i =0; i < cart.length; i++) {%>
 								<tr class="table_row">
 									<td class="column-2">
-										<center><input type="checkbox" id="chk<%=i%>" name="chk<%=i%>"/></center>
-												<input type="hidden" id="i_id<%=i%>" value="<%=cart[i].I_id%>"/>
+										<center><input type="checkbox" id="chk" name="chk" value="<%=cart[i].I_id%>"/></center>
 									</td>
 									<td class="column-1">
 										<div class="how-itemcart1">
 											<img src="images/<%=cart[i].img%>" alt="IMG">
 										</div>
 									</td>
-									<td class="column-3"><%=cart[i].name%></td>
+									<td class="column-3"><center><%=cart[i].name%></center></td>
 									<td class="column-3"><script>numberWithCommas(<%=cart[i].price%>);</script></td>
 									<td class="column-3"><center><%=cart[i].val%></center></td>
 									<td class="column-5"><script>numberWithCommas(<%= (cart[i].val * cart[i].price)%>);</script></td>
@@ -381,14 +406,10 @@
 						</div>
 
 						<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-
 							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-								<button type="submit">장바구니에서 제거</button>
+								<button type="submit" onclick="return frmsubmit()">장바구니에서 제거</button>
 							</div>
 						</div>
-
-						</form>
-
 					</div>
 				</div>
 
@@ -407,7 +428,7 @@
 
 							<div class="size-209">
 								<span class="mtext-110 cl2">
-									$79.65
+									<script>numberWithCommas(<%=sum%>);</script>
 								</span>
 							</div>
 						</div>
@@ -465,19 +486,17 @@
 
 							<div class="size-209 p-t-1">
 								<span class="mtext-110 cl2">
-									$79.65
+									<script>numberWithCommas(<%=sum%>);</script>
 								</span>
 							</div>
 						</div>
 
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Proceed to Checkout
-						</button>
+						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" onclick="return frmcheckout()">Proceed to Checkout</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	<!--</form>-->
+	</form>
 		
 	
 		

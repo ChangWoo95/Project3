@@ -380,7 +380,7 @@ router.post('/product_detail/:I_id', function(req, res, next) {
 router.get('/cart', function(req, res, next) {
 	pool.getConnection(function(err, connection){
 		var name = req.session.name;
-		var sql = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
+		var sql = "select item.*,cart.val,cart.CC_id from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
 		connection.query(sql,name, function(err, result){
 			if(err) console.error("글 장바구니 get 발생 err : ", err);
 			else {
@@ -397,17 +397,18 @@ router.post('/cart', function(req, res, next) {
 	
 	var ischecked = req.body.chk;
 	var datas = [];
-	var sql="";
-	
-	if(Array.isArray(ischecked)){
+	var sql = "";
+
+	if (Array.isArray(ischecked)) {
 		ischecked.forEach(function (item, index, array) {
 			datas.push(item);
-			sql += "delete from cart where I_id=?;";
+			sql = sql +  "delete from cart where I_id=?;";
+			console.log("현재 상황: ",datas + sql);
 		});
 	}
 	else{
 		datas.push(ischecked);
-		sql += "delete from cart where I_id=?;";
+		sql = sql +  "delete from cart where I_id=?;";
 	}
 
 	console.log("datas!!: "+datas);
@@ -423,8 +424,42 @@ router.post('/cart', function(req, res, next) {
 });
 
 router.post('/check_out', function(req, res, next) {
+	var chk = req.body.chk;
+	var ch_val = req.body.test1;
+
+	console.log(chk);
+	console.log(ch_val);
 	
-	/*var ischecked = req.body.chk;
+	var datas = [];
+	var sql="";
+	var newDate = new Date();
+	var date = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+	var name = req.session.name;
+
+	/*if(Array.isArray(chk)){
+		chk.forEach(function (item, index, array) {
+			datas.push(item);
+			sql += "delete from cart where I_id=?;";
+
+			datas.push(name);
+			datas.push(item);
+			datas.push(date);
+			sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";
+
+			datas.push(name);
+			datas.push(item);
+			datas.push(date);
+			sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";			
+
+
+		});
+	}
+	else{
+		datas.push(ischecked);
+		sql += "delete from cart where I_id=?;";
+	}
+
+	/*
 	var datas = [];
 	var sql="";
 	

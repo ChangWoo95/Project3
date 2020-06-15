@@ -425,7 +425,7 @@ router.post('/cart', function(req, res, next) {
 
 router.post('/check_out', function(req, res, next) {
 	var chk = req.body.chk;
-	var ch_val = req.body.test1;
+	var ch_val = req.body.chk_val;
 
 	console.log(chk);
 	console.log(ch_val);
@@ -436,10 +436,8 @@ router.post('/check_out', function(req, res, next) {
 	var date = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
 	var name = req.session.name;
 
-	/*if(Array.isArray(chk)){
+	if(Array.isArray(chk)){
 		chk.forEach(function (item, index, array) {
-			datas.push(item);
-			sql += "delete from cart where I_id=?;";
 
 			datas.push(name);
 			datas.push(item);
@@ -448,29 +446,28 @@ router.post('/check_out', function(req, res, next) {
 
 			datas.push(name);
 			datas.push(item);
+			datas.push(ch_val[index]);
 			datas.push(date);
-			sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";			
+			sql += "insert into Orderlist(C_id,I_id,cnt,date) values((SELECT C_id from customer where name = ?),?,?,?);";			
 
-
-		});
-	}
-	else{
-		datas.push(ischecked);
-		sql += "delete from cart where I_id=?;";
-	}
-
-	/*
-	var datas = [];
-	var sql="";
-	
-	if(ischecked.isArray){
-		ischecked.forEach(function (item, index, array) {
 			datas.push(item);
 			sql += "delete from cart where I_id=?;";
 		});
 	}
 	else{
-		datas.push(ischecked);
+
+		datas.push(name);
+		datas.push(chk);
+		datas.push(date);
+		sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";
+
+		datas.push(name);
+		datas.push(chk);
+		datas.push(ch_val);
+		datas.push(date);
+		sql += "insert into Orderlist(C_id,I_id,cnt,date) values((SELECT C_id from customer where name = ?),?,?,?);";			
+
+		datas.push(chk);
 		sql += "delete from cart where I_id=?;";
 	}
 
@@ -478,12 +475,12 @@ router.post('/check_out', function(req, res, next) {
 	console.log("sql!!: "+sql);
 	pool.getConnection(function(err, connection){
 		connection.query(sql,datas, function(err, result){
-			if(err) console.error("장바구니 제거 err : ", err);
-			else res.send("<script>alert('장바구니에 삭제되었습니다.');location.href='/mall/cart';</script>");
+			if(err) console.error("결제 시스템 err : ", err);
+			else res.send("<script>alert('결제가 완료되었습니다.');location.href='/mall/cart';</script>");
 			
 			connection.release();
 		});
-	});*/
+	});
 });
 
 module.exports = router;

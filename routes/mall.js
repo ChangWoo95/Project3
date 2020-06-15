@@ -371,7 +371,7 @@ router.post('/product_detail/:I_id', function(req, res, next) {
 
 		connection.query(sql, datas, function(err, row){
 			if(err) console.error("장바구니 insert err : ", err);
-			else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/product';</script>");
+			else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/cart';</script>");
 			connection.release();
 		});
 	});
@@ -382,7 +382,7 @@ router.get('/cart', function(req, res, next) {
 		var name = req.session.name;
 		var sql = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
 		connection.query(sql,name, function(err, result){
-			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			if(err) console.error("글 장바구니 get 발생 err : ", err);
 			else {
 				var sum = 0;
 				res.render('cart',{session: req.session, cart: result, sum: sum});
@@ -394,37 +394,61 @@ router.get('/cart', function(req, res, next) {
 });
 
 router.post('/cart', function(req, res, next) {
-	var i = 0;
-	/*var _chk1 = eval("req.body.chk" +0);
-	var _chk2 = eval("req.body.chk" +1);
-	console.log(_chk1,_chk2);*/
-	var datas= [];
-	var sql;
-
-	var i =0;
-	while(eval("req.body.chk" +i) =='on'){
-		var id2 = ""
-		var id = eval("req.body.i_id"+i);
-		console.log(i+" : "+id);
-		i++;
+	
+	var ischecked = req.body.chk;
+	var datas = [];
+	var sql="";
+	
+	if(ischecked.isArray){
+		ischecked.forEach(function (item, index, array) {
+			datas.push(item);
+			sql += "delete from cart where I_id=?;";
+		});
 	}
-	//var sql = "delete from cart where I_id=? and S_id = (select S_id from seller where password=? and name = ?)";
-	//var chk = req.body.del_chk;
-	//console.log("확인 :",chk);
-	/*pool.getConnection(function(err, connection){
-		var name = req.session.name;
-		var sql = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=(select C_id from customer where name = ?);";
-		connection.query(sql,name, function(err, result){
-			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
-			else {
-				var sum = 0;
-				res.render('cart',{session: req.session, cart: result, sum: sum});
-			}
+	else{
+		datas.push(ischecked);
+		sql += "delete from cart where I_id=?;";
+	}
+
+	console.log("datas!!: "+datas);
+	console.log("sql!!: "+sql);
+	pool.getConnection(function(err, connection){
+		connection.query(sql,datas, function(err, result){
+			if(err) console.error("장바구니 제거 err : ", err);
+			else res.send("<script>alert('장바구니에 삭제되었습니다.');location.href='/mall/cart';</script>");
+			
+			connection.release();
+		});
+	});
+});
+
+router.post('/check_out', function(req, res, next) {
+	
+	/*var ischecked = req.body.chk;
+	var datas = [];
+	var sql="";
+	
+	if(ischecked.isArray){
+		ischecked.forEach(function (item, index, array) {
+			datas.push(item);
+			sql += "delete from cart where I_id=?;";
+		});
+	}
+	else{
+		datas.push(ischecked);
+		sql += "delete from cart where I_id=?;";
+	}
+
+	console.log("datas!!: "+datas);
+	console.log("sql!!: "+sql);
+	pool.getConnection(function(err, connection){
+		connection.query(sql,datas, function(err, result){
+			if(err) console.error("장바구니 제거 err : ", err);
+			else res.send("<script>alert('장바구니에 삭제되었습니다.');location.href='/mall/cart';</script>");
 			
 			connection.release();
 		});
 	});*/
 });
-
 
 module.exports = router;

@@ -442,6 +442,10 @@
 						
 						<span class="fs-18 cl11">
 							평점: 
+							<% if( row.grade == undefined) {%> 
+								0
+							<% } %>
+
 							<% if( row.grade == parseInt(row.grade) ) { %>
 								<% for(var i=0; i < parseInt(row.grade) ;i++) { %>
 								<i class="zmdi zmdi-star"></i>

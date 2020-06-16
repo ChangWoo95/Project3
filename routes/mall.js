@@ -290,6 +290,21 @@ router.post('/product_delete/:I_id', function(req, res, next)
 	});
 });
 
+/*판매조회 get method*/
+router.get('/product_sale', function (req, res, next) {
+
+    pool.getConnection(function (err, connection) {
+        var sqlproduct = "SELECT Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand, Orderlist.date, Orderlist.cnt FROM Item, Orderlist WHERE Item.I_id = Orderlist.I_id and (Orderlist.ship_state = '배송 중' or Orderlist.ship_state = '배송 완료');"
+        connection.query(sqlproduct, req.session.name, function (err, rows) {
+            //console.log("이름 : ",rows[0].img);
+            if (err) console.error("err : " + err);
+            else res.render('product_sale', { session: req.session, rows: rows });
+            connection.release();
+
+        });
+    });
+});
+
 /*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {
 	

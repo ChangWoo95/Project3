@@ -19,7 +19,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^',
+	password: 'gosemvhs1~@#',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -295,7 +295,7 @@ router.post('/product_delete/:I_id', function(req, res, next)
 router.get('/product_sale', function (req, res, next) {
 
     pool.getConnection(function (err, connection) {
-        var sqlproduct = "SELECT Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand, Orderlist.date, Orderlist.cnt FROM Item, Orderlist WHERE Item.I_id = Orderlist.I_id and (Orderlist.ship_state = '배송 중' or Orderlist.ship_state = '배송 완료')";
+        var sqlproduct = "SELECT Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand, Orderlist.date, Orderlist.cnt FROM Item, Orderlist WHERE Item.I_id = Orderlist.I_id and (Orderlist.ship_state = '배송 중' or Orderlist.ship_state = '배송 완료');"
         connection.query(sqlproduct, req.session.name, function (err, rows) {
             //console.log("이름 : ",rows[0].img);
             if (err) console.error("err : " + err);
@@ -321,6 +321,7 @@ router.get('/product_orderlist', function (req, res, next) {
         });
     });
 });
+
 
 /*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {
@@ -554,28 +555,53 @@ router.get('/purchase', function(req, res, next) {
 
 
 router.get('/review', function(req, res, next) {
-	var l =req.query.btn_re;
-	console.log(l);
-	/*pool.getConnection(function(err, connection){
-		connection.query(sql, function(err, result){
-			if(err) console.error("구매내역 발생 err : ", err);
-			else {
-				var diff = [];
-				for(var i=0; i<result.length;i++){
-					var prev = moment(result[i].date);
-					var now_d = moment();
-					console.log("과거: ", prev.format('YYYY-MM-DD HH:mm:ss'));
-					console.log("지금 : ", now_d.format('YYYY-MM-DD HH:mm:ss'));
-					if( moment.duration(now_d.diff(prev)).minutes() <= 10) diff.push('T');
-					else diff.push('F');
-				}
-				console.log(diff);
-				res.render('purchase',{session: req.session, pur: result, diff: diff});		
-			}
+	var idx =req.query.btn_re;
+	console.log(idx);
+	var sql = "select * from item where I_id=?";
+	pool.getConnection(function(err, connection){
+		connection.query(sql,idx, function(err, result){
+			if(err) console.error("리뷰 err : ", err);
+			else res.render('review', {session: req.session, idx: idx, product: result[0]});		
 			connection.release();
 		});
-	});*/
-	res.render('contact');
+	});
+});
+
+router.post('/review', function(req, res, next) {
+	var idx =req.body.idx;
+	console.log("idx!!",idx);
+	var num = req.body.rating;
+	console.log("num!!",num);
+	var text = req.body.r_text;
+	console.log("text!!" + text);
+
+	var newDate = new Date();
+	var date = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+	var name = req.session.name;
+	var datas = [];
+	var sql = "";
+	var name = req.session.name;
+
+	datas.push(name);
+	datas.push(idx);
+	datas.push(num);
+	datas.push(text);
+	datas.push(date);
+	datas.push(idx);
+
+	sql += "insert into review(C_id,I_id,score,review,date) values((SELECT C_id from customer where name = ?),?,?,?,?);";
+	sql += "UPDATE item SET grade = (select avg(score) from review where review.I_id = ?);";
+
+	console.log("확인1 :",datas);
+	console.log("확인2 :",sql);
+
+	pool.getConnection(function(err, connection){
+		connection.query(sql,datas, function(err, result){
+			if(err) console.error("리뷰 err : ", err);
+			else res.send("<script>alert('작성되었습니다.');location.href='/mall/product';</script>");		
+			connection.release();
+		});
+	});
 });
 
 

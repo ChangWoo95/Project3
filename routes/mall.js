@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 var fs = require('fs');
+var moment = require('moment');
 var multer = require('multer'); //multer 모듈 이용
 var storage = multer.diskStorage({ //저장될 경로와 이름을 지정하는 storage
   destination: function(req, file, cb){
@@ -18,7 +19,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^',
+	password: 'gosemvhs1~@#',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -305,6 +306,7 @@ router.get('/product_sale', function (req, res, next) {
     });
 });
 
+
 /*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {
 	
@@ -379,7 +381,7 @@ router.post('/product_detail/:I_id', function(req, res, next) {
 	var id = req.params.I_id;
 	var name = req.session.name;
 	var val = req.body.num_product;
-
+	console.log(val);
 	pool.getConnection(function(err, connection){
 		var datas = [id,name,val];
 		var sql = "insert into cart(I_id,C_id,val) values (?,(SELECT C_id from customer where name = ?),?)";
@@ -414,7 +416,7 @@ router.post('/cart', function(req, res, next) {
 	var datas = [];
 	var sql = "";
 
-	if (Array.isArray(ischecked)) {
+	if(Array.isArray(ischecked)){
 		ischecked.forEach(function (item, index, array) {
 			datas.push(item);
 			sql = sql +  "delete from cart where I_id=?;";
@@ -441,9 +443,6 @@ router.post('/cart', function(req, res, next) {
 router.post('/check_out', function(req, res, next) {
 	var chk = req.body.chk;
 	var ch_val = req.body.chk_val;
-
-	console.log(chk);
-	console.log(ch_val);
 	
 	var datas = [];
 	var sql="";
@@ -457,13 +456,19 @@ router.post('/check_out', function(req, res, next) {
 			datas.push(name);
 			datas.push(item);
 			datas.push(date);
-			sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";
+			datas.push(ch_val[index]);
+			sql += "insert into purchase(C_id,I_id,date,val) values((SELECT C_id from customer where name = ?),?,?,?);";
 
 			datas.push(name);
 			datas.push(item);
 			datas.push(ch_val[index]);
 			datas.push(date);
 			sql += "insert into Orderlist(C_id,I_id,cnt,date) values((SELECT C_id from customer where name = ?),?,?,?);";			
+
+			datas.push(item);
+			datas.push(ch_val[index]);
+			datas.push(item);			
+			sql += "update item set cnt = (select cnt from (select * from item where I_id=?) as tmp)-? where I_id=?;";
 
 			datas.push(item);
 			sql += "delete from cart where I_id=?;";
@@ -474,13 +479,19 @@ router.post('/check_out', function(req, res, next) {
 		datas.push(name);
 		datas.push(chk);
 		datas.push(date);
-		sql += "insert into purchase(C_id,I_id,date) values((SELECT C_id from customer where name = ?),?,?);";
+		datas.push(ch_val);
+		sql += "insert into purchase(C_id,I_id,date,val) values((SELECT C_id from customer where name = ?),?,?,?);";
 
 		datas.push(name);
 		datas.push(chk);
 		datas.push(ch_val);
 		datas.push(date);
 		sql += "insert into Orderlist(C_id,I_id,cnt,date) values((SELECT C_id from customer where name = ?),?,?,?);";			
+
+		datas.push(chk);
+		datas.push(ch_val);
+		datas.push(chk);			
+		sql += "update item set cnt = (select cnt from (select * from item where I_id=?) as tmp)-? where I_id=?;";
 
 		datas.push(chk);
 		sql += "delete from cart where I_id=?;";
@@ -491,11 +502,66 @@ router.post('/check_out', function(req, res, next) {
 	pool.getConnection(function(err, connection){
 		connection.query(sql,datas, function(err, result){
 			if(err) console.error("결제 시스템 err : ", err);
-			else res.send("<script>alert('결제가 완료되었습니다.');location.href='/mall/cart';</script>");
+			else res.send("<script>alert('결제가 완료되었습니다.');location.href='/mall/purchase';</script>");
 			
 			connection.release();
 		});
 	});
 });
+
+router.get('/purchase', function(req, res, next) {
+	
+	var sql= "select purchase.*,item.img,item.name,item.cnt,item.price from purchase,item where purchase.I_id=item.I_id";
+
+	console.log("sql!!: "+sql);
+	
+	
+	pool.getConnection(function(err, connection){
+		connection.query(sql, function(err, result){
+			if(err) console.error("구매내역 발생 err : ", err);
+			else {
+				var diff = [];
+				for(var i=0; i<result.length;i++){
+					var prev = moment(result[i].date);
+					var now_d = moment();
+					console.log("과거: ", prev.format('YYYY-MM-DD HH:mm:ss'));
+					console.log("지금 : ", now_d.format('YYYY-MM-DD HH:mm:ss'));
+					if( moment.duration(now_d.diff(prev)).minutes() <= 10) diff.push('T');
+					else diff.push('F');
+				}
+				console.log(diff);
+				res.render('purchase',{session: req.session, pur: result, diff: diff});		
+			}
+			connection.release();
+		});
+	});
+});
+
+
+router.get('/review', function(req, res, next) {
+	var l =req.query.btn_re;
+	console.log(l);
+	/*pool.getConnection(function(err, connection){
+		connection.query(sql, function(err, result){
+			if(err) console.error("구매내역 발생 err : ", err);
+			else {
+				var diff = [];
+				for(var i=0; i<result.length;i++){
+					var prev = moment(result[i].date);
+					var now_d = moment();
+					console.log("과거: ", prev.format('YYYY-MM-DD HH:mm:ss'));
+					console.log("지금 : ", now_d.format('YYYY-MM-DD HH:mm:ss'));
+					if( moment.duration(now_d.diff(prev)).minutes() <= 10) diff.push('T');
+					else diff.push('F');
+				}
+				console.log(diff);
+				res.render('purchase',{session: req.session, pur: result, diff: diff});		
+			}
+			connection.release();
+		});
+	});*/
+	res.render('contact');
+});
+
 
 module.exports = router;

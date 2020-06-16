@@ -449,9 +449,11 @@
 						</span><br>
 						
 						<span class="fs-18 cl11">
-							평점: <%=row.grade%>점<br>
+							평점: 
 							<% if( row.grade == undefined) {%> 
-								0
+								0점<br>
+							<% }else{ %>
+								<%=row.grade%>점<br>
 							<% } %>
 
 							<% if( row.grade == parseInt(row.grade) ) { %>

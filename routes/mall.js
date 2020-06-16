@@ -459,7 +459,7 @@ router.post('/cart', function(req, res, next) {
 router.post('/check_out', function(req, res, next) {
 	var chk = req.body.chk;
 	var ch_val = req.body.chk_val;
-	
+	console.log(ch_val);
 	var datas = [];
 	var sql="";
 	var newDate = new Date();
@@ -527,7 +527,7 @@ router.post('/check_out', function(req, res, next) {
 
 router.get('/purchase', function(req, res, next) {
 	
-	var sql= "select purchase.*,item.img,item.name,item.cnt,item.price from purchase,item where purchase.I_id=item.I_id";
+	var sql= "select purchase.*,item.img,item.name,item.price from purchase,item where purchase.I_id=item.I_id";
 
 	console.log("sql!!: "+sql);
 	
@@ -542,7 +542,10 @@ router.get('/purchase', function(req, res, next) {
 					var now_d = moment();
 					console.log("과거: ", prev.format('YYYY-MM-DD HH:mm:ss'));
 					console.log("지금 : ", now_d.format('YYYY-MM-DD HH:mm:ss'));
-					if( moment.duration(now_d.diff(prev)).minutes() <= 10) diff.push('T');
+					if( moment.duration(now_d - prev).asMinutes() <= 10) {
+						console.log(moment.duration(now_d - prev).asMinutes());
+						diff.push('T');
+					}
 					else diff.push('F');
 				}
 				console.log(diff);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<% if(session.auth != 'c'){ %>
+<% if(session.auth != 'c' && !session.islogined){ %>
 	<script>alert('로그인 후 이용해주세요');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">

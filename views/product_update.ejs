@@ -337,9 +337,18 @@
       </div>
    </div>
 
-   <p>><h1 align="center">상품 수정</h1></p>
+   <br><br><h1 align="center">상품 수정</h1>
 
-   <form class="bg0 p-t-75 p-b-85" enctype="multipart/form-data" action="/mall/product_update/<%=row.I_id%>" method="post">
+   <script>
+      function changeValue(obj){
+         var k = 0;
+         $('input[name=chk]').val(k);
+         alert("이거까지는 성공!");
+      }
+   </script>
+
+
+   <form class="bg0 p-t-75 p-b-85" enctype="multipart/form-data" method="post">
       <div class="container">
          <div class="row">
             <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
@@ -348,7 +357,9 @@
                      <table class="table-shopping-cart">
                         <tr>
                            <th class="column-3">Image</th>
-                           <td><input style="border:1px solid #808080;" type="file" name="img" id="img"/></td>
+                            <td><input style="border:1px solid #808080;" type="file" name="img" id="img" onchange="changeValue(this)"/></td>
+                            <td><input type="hidden" name="org" value="<%=row.img%>"/><td>
+                            <td><input type="hidden" name="chk" value="1" /><td>
                         </tr>
                         <tr>
                            <th class="column-3">name</th>
@@ -377,20 +388,18 @@
                         <tr>
                            <td colspan="2">
                               <div id="btn_g">
-                                 <button id="btn1"type="submit">수정 완료 </button>
+                                 <button id="btn1"type="submit" onclick="javascript: form.action='/mall/product_update/<%=row.I_id%>'">수정 완료 </button>
                               </div>
                            </td>
                         </tr>                                                   
-                     </table>
+                     </table>                    
                   </div>
-                  <input type="submit" value="삭제" class="btn btn-outline-danger" onclick="javascript: form.action='/mall/product_delete/<%=row.I_id%>';"/>
                </div>
+                        <a href="/mall/product_delete/<%=row.I_id%>">삭제</a>   
             </div>
          </div>
       </div>
    </form>
-
-      
 
    <!-- Footer -->
    <footer class="bg3 p-t-75 p-b-32">

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-
+var fs = require('fs');
 var multer = require('multer'); //multer 모듈 이용
 var storage = multer.diskStorage({ //저장될 경로와 이름을 지정하는 storage
   destination: function(req, file, cb){
@@ -155,6 +155,7 @@ router.get('/product_manage',function(req, res, next){
 	pool.getConnection(function (err, connection){
 		var sqlproduct = "SELECT Item.name, I_id, type, img, category, brand, date, price, cnt FROM Item, seller WHERE seller.name= ? and item.S_id = seller.S_id";
 		connection.query(sqlproduct, req.session.name, function(err, rows){
+			//console.log("이름 : ",rows[0].img);
 			if(err) console.error("err : " + err);
 			else res.render('product_manage',{session: req.session, rows: rows});
 			connection.release();
@@ -204,6 +205,7 @@ router.post('/product_add', upload.single("img"), function(req, res, next) {
 	var datas = [img,name,type,category,brand,date,price,cnt,ses_name];
 
 	var sql ="insert into item(img,name,type,category,brand,date,price,cnt,S_id) values (?,?,?,?,?,?,?,?,(SELECT S_id from seller where name = ?))";
+	
 	pool.getConnection(function(err, connection){
 		connection.query(sql,datas, function(err, row){
 			if(err) console.error(err);
@@ -216,6 +218,7 @@ router.post('/product_add', upload.single("img"), function(req, res, next) {
 		});
 	});	
 });
+
 /*상품수정 get method*/
 router.get('/product_update/:I_id',function(req, res, next)
 {
@@ -234,18 +237,30 @@ router.get('/product_update/:I_id',function(req, res, next)
 
 	});
 });
+
 /*상품수정 post method*/
-router.post('/product_update/:I_id', upload.single("image"), function(req, res, next)
+router.post('/product_update/:I_id', upload.single("img"), function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	//var img = req.file.originalname;
-	var img = req.body.img;
+	var org = req.body.org;
+	var chk = req.body.chk;
+	
+	if(chk == 1) var img = org; //들어온 이미지가 없음
+	else {
+		org = './public/images/' + org;
+		var img = req.file.originalname; //들어온 이미지가 있음
+		fs.unlink(org, function (re) {
+        	if (re) console.log(re);
+        });
+	}
+
 	var name = req.body.name;
 	var type = req.body.type;
 	var category = req.body.category;
 	var brand = req.body.brand;
 	var price = req.body.price;
 	var cnt = req.body.cnt;
+
 	console.log("I_id 값 확인 : ", I_id);
 	pool.getConnection(function(err, connection)
 	{
@@ -262,19 +277,36 @@ router.post('/product_update/:I_id', upload.single("image"), function(req, res, 
 
 /*상품삭제 get method*/
 router.get('/product_delete/:I_id', function(req, res, next) {
-  res.render('product_delete',{row: row, session: req.session});
+	var I_id = req.params.I_id;
+
+	pool.getConnection(function(err, connection)
+	{
+		if(err) console.error("커넥션 객체 얻어오기 에러 : ", err);
+
+		var sql = "select * from Item where I_id=?";
+		connection.query(sql,[I_id],function(err,rows)
+		{
+			if(err) console.error(err);
+			console.log("delete할 상품 조회 결과 확인 : ", rows);
+			res.render('product_delete', {title:"상품 삭제", row:rows[0], session:req.session});
+			connection.release();
+		});
+	});
 });
 
 /*상품삭제 post method*/
 router.post('/product_delete/:I_id', function(req, res, next)
 {
 	var I_id = req.params.I_id;
-	var password = req.session.password;
-	var datas = [I_id, password];
-
+	var password = req.body.password;
+	var name = req.session.name;
+	var org = './public/images/'+ req.body.org;
+	console.log("test ",org);
+	var datas = [I_id, password,name];
+	console.log("패스워드 : ", req.body.password);
 	pool.getConnection(function(err, connection)
 	{
-		var sql = "delete from Item where idx=? and passwd=?";
+		var sql = "delete from item where I_id=? and S_id = (select S_id from seller where password=? and name = ?)";
 		connection.query(sql,datas, function(err, result)
 		{
 			console.log(result);
@@ -286,7 +318,10 @@ router.post('/product_delete/:I_id', function(req, res, next)
 			}
 			else
 			{
-				res.redirect('/board/list/1');
+				fs.unlink(org, function (re) {
+        			if (re) console.log(re);
+        		});				
+				res.redirect('/mall/product_manage');
 			}
 
 			connection.release();

@@ -224,8 +224,6 @@
 
 				<li><a href="/mall/product_manage">상품관리</a></li>
 
-				<li><a href="/mall/product_orderlist">주문현황</a></li>
-
 				<li><a href="/mall/product_sale">판매조회</a></li>
 
 				<li>
@@ -346,7 +344,7 @@
 		<div class="container">
 			<div class="flex-w flex-sb-m p-b-52">
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-					<H3>판매내역</H3>
+					<H3>주문현황</H3>
 				</div>
 
 				<div class="flex-w flex-c-m m-tb-10">
@@ -580,14 +578,17 @@
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
 								<tr class="table_head">
+									<th class="column-2">주문번호</th>
+									<th class="column-2">구매자번호</th>
 									<th class="column-1">사진</th>
-									<th class="column-3">이름</th>
-									<th class="column-3">가격</th>
-									<th class="column-4">type</th>
-									<th class="column-5">category</th>
-									<th class="column-6">brand</th>
-									<th class="column-4">order-date</th>
-									<th class="column-5">판매수량</th>
+									<th class="column-3">상품명</th>
+									<th class="column-2">가격</th>
+									<th class="column-3">type</th>
+									<th class="column-3">category</th>
+									<th class="column-3">brand</th>
+									<th class="column-3">주문날짜</th>
+									<th class="column-2">주문수량</th>
+									<th class="column-2">배송상태</th>
 								</tr>
 								<% if(rows.length == 0) {%>
 									<tr class="table_row">
@@ -598,14 +599,17 @@
 									var oneUser = rows[i];
 								%>
 								<tr class="table_row">
+									<td class="column-3"><%=oneUser.O_id%></td>
+									<td class="column-3"><%=oneUser.C_id%></td>
 									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
 									<td class="column-3"><%=oneUser.name%></td>
 									<td class="column-3"><script>numberWithCommas(<%=oneUser.price%>);</script></td>
-									<td class="column-4"><%=oneUser.type%></td>
-									<td class="column-5"><%=oneUser.category%></td>
-									<td class="column-6"><%=oneUser.brand%></td>
-									<td class="column-4"><%=oneUser.date%></td>
-									<td class="column-5"><%=oneUser.cnt%></td>
+									<td class="column-3"><%=oneUser.type%></td>
+									<td class="column-3"><%=oneUser.category%></td>
+									<td class="column-3"><%=oneUser.brand%></td>
+									<td class="column-3"><%=oneUser.date%></td>
+									<td class="column-1"><%=oneUser.cnt%></td>
+									<td class="column-3"><%=oneUser.ship_state%></td>
 								</tr>
 								<%
 										}

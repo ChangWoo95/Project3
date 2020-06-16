@@ -19,7 +19,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#',
+	password: 'sw8836^^',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -306,7 +306,6 @@ router.get('/product_sale', function (req, res, next) {
     });
 });
 
-<<<<<<< HEAD
 /*주문현황 get method*/
 router.get('/product_orderlist', function (req, res, next) {
 
@@ -322,9 +321,6 @@ router.get('/product_orderlist', function (req, res, next) {
         });
     });
 });
-
-=======
->>>>>>> 81626b79947bbde863e05a35efeb4185a0809f4e
 
 /*회원정보 조회 get method*/
 router.get('/myaccount', function(req, res, next) {

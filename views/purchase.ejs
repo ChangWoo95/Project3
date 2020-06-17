@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<% if(session.auth != 'c'){ %>
+<% if(session.auth != 'c' && !session.islogined){ %>
 	<script>alert('로그인 후 이용해주세요');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">
@@ -377,7 +377,7 @@
 									</td>
 									<td class="column-3"><center><%=pur[i].name%></center></td>
 									<td class="column-3"><center><%=pur[i].date%></center></td>
-									<td class="column-3"><script>numberWithCommas(<%= (pur[i].price * pur[i].cnt) %>);</script>(<%=pur[i].cnt%>)</td>
+									<td class="column-3"><script>numberWithCommas(<%= (pur[i].price * pur[i].val) %>);</script>(<%=pur[i].val%>)</td>
 							<% 		if( diff[i] == 'T') { %>
 									<td class="column-3"><center><button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="btn_cancel"value="<%=pur[i].P_id%>" onclick="return frmcheckout()">주문 취소</button></center></td>
 							<% }else{ %>

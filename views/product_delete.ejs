@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-<% if(session.auth != 's'){ %>
-	<script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
+<% if(session.auth != 's' && !session.islogined){ %>
+	<script>alert('접근권한이 없습니다.');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">
 <head>
@@ -113,6 +113,9 @@
 							<li class="active-menu">
 								<a href="/mall/product_manage">상품관리</a>
 							</li>
+							<li class="active-menu">
+								<a href="/mall/product_orderlist">주문현황</a>
+							</li>							
 							<li class="active-menu">
 								<a href="/mall/product_sale">판매조회</a>
 							</li>
@@ -228,7 +231,7 @@
 				</li>
 
 				<li><a href="/mall/product_manage">상품관리</a></li>
-
+				<li><a href="/mall/product_orderlist">주문현황</a></li>
 				<li><a href="/mall/product_sale">판매조회</a></li>
 				
 				<li>

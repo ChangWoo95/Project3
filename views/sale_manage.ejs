@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<% if(session.auth != 'a'){ %>
-   <script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
+<% if(session.auth != 'a' && !session.islogined){ %>
+   <script>alert('접근권한이 없습니다.');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">
 <head>
@@ -86,7 +86,7 @@
                      <li><a href="/mall/user_manage">회원관리</a>
                      </li>
                      <li class="active-menu">
-                        <a href="/mall/sale_manage">세일 관리</a>
+                        <a href="/mall/sale_manage">할인품목관리</a>
                      </li>
                   </ul>
                </div>   
@@ -140,7 +140,7 @@
             </li>
 
             <li><a href="/mall/user_manage">회원관리</a></li>
-            <li><a href="/mall/sale_manage">세일관리</a></li>
+            <li><a href="/mall/sale_manage">할인품목관리</a></li>
          </ul>
       </div>
 
@@ -200,7 +200,6 @@
                            %>
                         </table>
                      </div>
-                     <input type="submit" value="추가" class="btn btn-outline-primary" onclick="javascript: form.action='/mall/product_add';"/>
                   </div>
                </div>
             </div>

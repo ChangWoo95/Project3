@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<% if(session.auth != 'a'){ %>
+<% if(session.auth != 'a' && !session.islogined){ %>
 	<script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
  <% } %>
 <html lang="en">
@@ -96,7 +96,7 @@
 						   <li><a href="/mall/user_manage">회원관리</a>
 						   </li>
 						   <li class="active-menu">
-							  <a href="/mall/sale_manage">세일 관리</a>
+							  <a href="/mall/sale_manage">할인품목관리</a>
 						   </li>
 						</ul>
 					 </div>
@@ -152,7 +152,7 @@
 				</li>
 
 				<li>
-					<a href="/mall/sale_manage">세일관리</a>
+					<a href="/mall/sale_manage">할인품목관리</a>
 				</li>
 			</ul>
 		</div>
@@ -198,10 +198,10 @@
 						<div class="p-t-33">
 							<form method="post" action="/mall/sale_detail/<%=row.I_id%>">
 								<p>이벤트 시작 날짜 : </p>
-								<div><input type="date" id="startdate" name="startdate" value="2020-06-18"></div>
+								<div><input type="datetime-local" id="startdate" name="startdate" value="<%=now_d%>"></div>
 								<br>
 								<p>이벤트 종료 날짜 : </p>
-								<div><input type="date" id="enddate" name="enddate" value="2020-06-18"></div><br><br><br>
+								<div><input type="datetime-local" id="enddate" name="enddate"></div><br><br><br>
 								<div class="flex-w flex-r-m p-b-10">
 									<div class="size-204 flex-w flex-m respon6-next">
 										<div id="except_num" class="wrap-num-product flex-w m-r-20 m-tb-10">

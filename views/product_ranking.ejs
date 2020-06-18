@@ -154,7 +154,7 @@
                <a href="/mall/product" class="label1 rs1" data-label1="hot">상품조회</a>
             </li>
 
-			<li>
+         <li>
                <a href="/mall/product_ranking">상품랭킹</a>
             </li>
 
@@ -224,97 +224,102 @@
    </div>
 
    <!-- Product Ranking -->
-	<ul class="nav nav-tabs">
-		<li class="nav-item">
-			<a class="nav-link active" data-toggle="tab" href="#cnt">구매TOP10</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" data-toggle="tab" href="#score">평점TOP10</a>
-		</li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane fade show active" id="cnt">
-			<div class="container">
+   <ul class="nav nav-tabs">
+      <li class="nav-item">
+         <a class="nav-link active" data-toggle="tab" href="#cnt">구매TOP10</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" data-toggle="tab" href="#score">평점TOP10</a>
+      </li>
+   </ul>
+
+   <div class="tab-content">
+      <div class="tab-pane fade show active" id="cnt">
+         <div class="container">
       
-				<div class="row">
-					<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
-						<div class="m-l-25 m-r--38 m-lr-0-xl">
-							<div class="wrap-table-shopping-cart">
-								<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-1">순위</th>
-									<th class="column-3">사진</th>
-									<th class="column-3">상품명</th>
-									<th class="column-3"></th>
-								</tr>
-								<% if(sale.length == 0) {%>
-									<tr class="table_row">
-										<td colspan="8"><div style="text-align:center">판매된 상품이 없습니다.</div></td>
-									</tr>                        
-								<%   }else {
-									for(var i = 0; i< sale.length; i++){
-									var oneUser = sale[i];
-								%>
-								<tr class="table_row">
-									<td class="column-1"><%=i+1%></td>
-									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
-									<td class="column-3"><%=oneUser.name%></td>
-									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li</td>
-								</tr>
-								<%
-										}
-									}
-								%>
-							</table>
-						</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="tab-pane fade show active" id="score">
-			<div class="container">
+            <div class="row">
+               <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
+                  <div class="m-l-25 m-r--38 m-lr-0-xl">
+                     <div class="wrap-table-shopping-cart">
+                        <table class="table-shopping-cart">
+                        <tr class="table_head">
+                           <th class="column-1">순위</th>
+                           <th class="column-3">사진</th>
+                           <th class="column-3">상품명</th>
+                           <th class="column-3"></th>
+                        </tr>
+                        <% if(sale.length == 0) {%>
+                           <tr class="table_row">
+                              <td colspan="8"><div style="text-align:center">판매된 상품이 없습니다.</div></td>
+                           </tr>                        
+                        <%   }else {
+                           for(var i = 0; i< sale.length; i++){
+                           var oneUser = sale[i];
+                        %>
+                        <tr class="table_row">
+                           <td class="column-1"><%=i+1%></td>
+                           <td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
+                           <td class="column-3"><%=oneUser.name%></td>
+                           <td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li></td>
+                        </tr>
+                        <%
+                              }
+                           }
+                        %>
+                       </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+
+      <div class="tab-pane fade" id="score">
+         <div class="container">
       
-				<div class="row">
-					<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
-						<div class="m-l-25 m-r--38 m-lr-0-xl">
-							<div class="wrap-table-shopping-cart">
-								<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-1">순위</th>
-									<th class="column-3">사진</th>
-									<th class="column-3">상품명</th>
-									<th class="column-3"></th>
-								</tr>
-								<% if(grade.length == 0) {%>
-									<tr class="table_row">
-										<td colspan="8"><div style="text-align:center">평점이 등록된 상품이 없습니다.</div></td>
-									</tr>                        
-								<%   }else {%>
-								<%	for(var i = 0; i< grade.length; i++){%>
-									<% if(i == 10) {%>
-										<% break; %>
-									<%}%>
-								<%	var oneUser = grade[i];
-								%>
-								<tr class="table_row">
-									<td class="column-1"><%=i+1%></td>
-									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
-									<td class="column-3"><%=oneUser.name%></td>
-									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li</td>
-								</tr>
-								<%
-										}
-									}
-								%>
-							</table>
-						</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="row">
+               <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
+                  <div class="m-l-25 m-r--38 m-lr-0-xl">
+                     <div class="wrap-table-shopping-cart">
+                        <table class="table-shopping-cart">
+                        <tr class="table_head">
+                           <th class="column-1">순위</th>
+                           <th class="column-3">사진</th>
+                           <th class="column-3">상품명</th>
+                           <th class="column-3"></th>
+                        </tr>
+                        <% if(grade.length == 0) {%>
+                           <tr class="table_row">
+                              <td colspan="8"><div style="text-align:center">평점이 등록된 상품이 없습니다.</div></td>
+                           </tr>                        
+                        <%   }else {%>
+                        <%   for(var i = 0; i< grade.length; i++){%>
+                           <% if(i == 10) {%>
+                              <% break; %>
+                           <%}%>
+                        <%   var oneUser = grade[i];
+                        %>
+                        <tr class="table_row">
+                           <td class="column-1"><%=i+1%></td>
+                           <td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
+                           <td class="column-3"><%=oneUser.name%></td>
+                           <td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li></td>
+                        </tr>
+                        <%
+                              }
+                           }
+                        %>
+                     </table>
+                  </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+      
+   </div>
 
    <!-- Footer -->
    <footer class="bg3 p-t-75 p-b-32">

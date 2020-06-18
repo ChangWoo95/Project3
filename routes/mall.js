@@ -21,7 +21,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#',
+	password: 'sw8836^^',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -604,36 +604,34 @@ router.get('/purchase', function(req, res, next) {
 	});
 });
 
-router.post('/purchase', function(req, res, next) {
-	var pk = req.session.pk;
-	var c = req.body.btn_cancel;
+router.post('/purchase', function (req, res, next) {
+    var pk = req.session.pk;
+    var c = req.body.btn_cancel;
 
-	console.log("확인! : "+c);
-	var datas = [];
-	var sql = "";
+    console.log("확인! : " + c);
+    var datas = [];
+    var sql = "";
 
-	sql += "update item set cnt = (select cnt from (select * from item where I_id= (select I_id from purchase where P_id=?) ) as tmp) + (select val from purchase where P_id = ?) where I_id= (select I_id from purchase where P_id = ?);";
-	datas.push(c);
-	datas.push(c);
-	datas.push(c);
+    sql += "update item set cnt = (select cnt from (select * from item where I_id= (select I_id from purchase where P_id=?) ) as tmp) + (select val from purchase where P_id = ?) where I_id= (select I_id from purchase where P_id = ?);";
+    datas.push(c);
+    datas.push(c);
+    datas.push(c);
 
-	sql += "delete from orderlist where C_id = ? and I_id = (select I_id from purchase where P_id = ?) and date = (select date from purchase where P_id = ?);";
-	datas.push(pk);
-	datas.push(c);
-	datas.push(c);
+    sql += "delete from orderlist where C_id = ? and I_id = (select I_id from purchase where P_id = ?) and date = (select date from purchase where P_id = ?);";
+    datas.push(pk);
+    datas.push(c);
+    datas.push(c);
 
-	sql += "delete from purchase where I_id = (select * from (select I_id from purchase where P_id = ?) as x);";
-	datas.push(c);	
-	
-	pool.getConnection(function(err, connection){
-		connection.query(sql,datas, function(err, result){
-			if(err) console.error("구매내역 발생 err : ", err);
-			else {
-				res.redirect('purchase');	
-			}
-			connection.release();
-		});
-	});
+    sql += "delete from purchase where I_id = (select * from (select I_id from purchase where P_id = ?) as x);";
+    datas.push(c);
+
+    pool.getConnection(function (err, connection) {
+        connection.query(sql, datas, function (err, result) {
+            if (err) console.error("구매내역 발생 err : ", err);
+            else res.send("<script>alert('구매취소가 완료되었습니다.');location.href='/mall/purchase';</script>");
+            connection.release();
+        });
+    });
 });
 
 

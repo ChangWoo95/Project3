@@ -417,6 +417,26 @@ router.post('/product_detail/:I_id', function (req, res, next) {
     });
 });
 
+/*상품랭킹 get method*/
+router.get('/product_ranking', function (req, res, next) {
+    var pk = req.session.pk;
+    pool.getConnection(function (err, connection) {
+        //var sql1 = "select * from item order by I_id;";
+        //var sql2 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
+        var sql1 = "select distinct Item.I_id, Item.img, Item.name from Item, Orderlist where Item.I_id in (select I_id from orderlist group by I_id order by sum(cnt) desc);"; //구매량TOP10
+        var sql2 = "select img, name, grade from Item order by grade desc;"; //평점TOP10
+        var sql3 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
+        connection.query(sql1 + sql2 + sql3, pk, function (err, result) {
+            if (err) console.error("글 삭제 중 에러 발생 err : ", err);
+            else {
+                var sum = 0;
+                res.render('product_ranking', { session: req.session, sale: result[0], grade: result[1], cart: result[2], sum: sum });
+            }
+            connection.release();
+        });
+    });
+});
+
 router.get('/cart', function (req, res, next) {
     pool.getConnection(function (err, connection) {
         var pk = req.session.pk;
@@ -631,9 +651,10 @@ router.post('/review', function (req, res, next) {
     datas.push(text);
     datas.push(date);
     datas.push(idx);
+    datas.push(idx);
 
     sql += "insert into review(C_id,I_id,score,review,date) values(?,?,?,?,?);";
-    sql += "UPDATE item SET grade = (select avg(score) from review where review.I_id = ?);";
+    sql += "UPDATE item SET grade = (select avg(score) from review where review.I_id = ?) where item.I_id = ?;";
 
     console.log("확인1 :", datas);
     console.log("확인2 :", sql);

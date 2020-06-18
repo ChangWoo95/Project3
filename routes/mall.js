@@ -85,6 +85,7 @@ router.get('/logout', function(req, res, next) {
    res.redirect('/mall');
 });
 
+
 /*회원가입 get method*/
 router.get('/join', function(req, res, next) {
    res.render('join');
@@ -164,6 +165,47 @@ router.get('/product_manage',function(req, res, next){
 router.get('/product_add', function(req, res, next) {
   res.render('product_add',{session: req.session});
 });
+
+router.get('/sale_manage', function(req, res, next) {
+	pool.getConnection(function (err, connection){
+		var sqlproduct = "select * from item order by I_id";
+		console.log(sqlproduct);
+		connection.query(sqlproduct, req.session.pk, function(err, rows){
+			if(err) console.error("err : " + err);
+			else res.render('sale_manage',{session: req.session, rows: rows});
+			connection.release();
+
+		});
+	});
+ });
+
+ router.get('/sale_detail/:I_id', function(req, res, next) {
+	
+	pool.getConnection(function(err, connection){
+		var num = req.params.I_id;
+		var pk = req.session.pk;
+		console.log("확인1 : ",num);
+
+		var sql = "select * from item where I_id=?;";
+		var sql2 = "select review.*,customer.name from review,customer where review.I_id=? and review.C_id = customer.C_id;";
+		var sql3 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id = ?;";
+		console.log("확인2 : ",pk);
+		var datas = [num,num,pk];
+
+		connection.query(sql+sql2+sql3, datas, function(err, rows){
+			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
+			else {
+				var sum = 0;
+				res.render('sale_detail',{session: req.session, row: rows[0][0], review: rows[1], cart: rows[2], sum: sum});
+			}
+	
+			connection.release();
+		});
+	});
+});
+
+
+
 
 /*상품추가 post method*/
 router.post('/product_add', upload.single("img"), function(req, res, next) {
@@ -410,6 +452,25 @@ router.get('/product_detail/:I_id', function(req, res, next) {
 		});
 	});
 });
+
+/*세일조회 post method*/
+router.post('/sale_detail/:I_id', function(req, res, next) {
+	var id = req.params.I_id;
+	var startdate = req.body.startdate;
+	var enddate = req.body.enddate;
+	var sale = req.body.sale;
+	console.log(sale);
+	pool.getConnection(function(err, connection){
+	   var datas = [id,startdate,enddate,sale];
+	   var sql = "insert into onsale(I_id,startdate,enddate,sale) values (?,?,?,?)";
+ 
+	   connection.query(sql, datas, function(err, row){
+		  if(err) console.error("장바구니 insert err : ", err);
+		  else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/cart';</script>");
+		  connection.release();
+	   });
+	});
+ });
 
 /*상품조회 post method*/
 router.post('/product_detail/:I_id', function(req, res, next) {

@@ -82,6 +82,7 @@
 
 							<% if(session.auth == 'a'){ %>
 								<li><a href="/mall/user_manage">회원관리</a></li>
+								<li><a href="/mall/sale_manage">세일관리</a></li>
 							<% }else if(session.auth == 's'){ %>
 								<li><a href="/mall/product_manage">상품관리</a></li>
 								<li><a href="/mall/product_orderlist">주문현황</a></li>
@@ -171,6 +172,7 @@
 
 			<% if(session.auth == 'a'){ %>
 					<li><a href="/mall/user_manage">회원관리</a></li>
+					<li><a href="/mall/sale_manage">세일 관리</a></li>
 				<% }else if(session.auth == 's'){ %>
 					<li><a href="/mall/product_manage">상품관리</a></li>
 					<li><a href="/mall/product_orderlist">주문현황</a></li>

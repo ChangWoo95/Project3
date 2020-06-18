@@ -83,8 +83,7 @@
                <!-- Menu desktop -->
                <div class="menu-desktop">
                   <ul class="main-menu">
-                     <li class="label1" data-label1="hot">
-                        <a href="/mall/product">상품조회</a></li>
+                     <li class="label1" data-label1="hot"><a href="/mall/product">상품조회</a></li>
                      <li><a href="/mall/cart">장바구니</a></li>
                      <li><a href="/mall/purchase">구매내역</a></li>
                   </ul>
@@ -323,15 +322,9 @@
                         </a>
 
                         <span class="stext-105 cl3">
-                           <script>numberWithCommas(<%=rows[i].price%>);</script>
+                           <%if(rows[i].startdate != undefined){ %> <del><script>numberWithCommas(<%=rows[i].price%>);</script></del> -> <ins style="color: red;"><script>numberWithCommas(<%=rows[i].price%> * (100 - <%=rows[i].sale%>) / 100 );</script><br>(<%=rows[i].diff%>일남음!!)</ins>
+                           <% }else{ %><script>numberWithCommas(<%=rows[i].price%>);</script> <% } %>
                         </span>
-                     </div>
-
-                     <div class="block2-txt-child2 flex-r p-t-3">
-                        <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                           <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png" alt="ICON">
-                           <img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png" alt="ICON">
-                        </a>
                      </div>
                   </div>
                </div>

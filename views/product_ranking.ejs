@@ -232,6 +232,7 @@
 			<a class="nav-link" data-toggle="tab" href="#score">평점TOP10</a>
 		</li>
 	</ul>
+
 	<div class="tab-content">
 		<div class="tab-pane fade show active" id="cnt">
 			<div class="container">
@@ -259,20 +260,22 @@
 									<td class="column-1"><%=i+1%></td>
 									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
 									<td class="column-3"><%=oneUser.name%></td>
-									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li</td>
+									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li></td>
 								</tr>
 								<%
 										}
 									}
 								%>
-							</table>
-						</div>
+							  </table>
+						   </div>
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
-		<div class="tab-pane fade show active" id="score">
+
+		<div class="tab-pane fade" id="score">
 			<div class="container">
       
 				<div class="row">
@@ -301,7 +304,7 @@
 									<td class="column-1"><%=i+1%></td>
 									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
 									<td class="column-3"><%=oneUser.name%></td>
-									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li</td>
+									<td><li><a href="/mall/product_detail/<%=oneUser.I_id%>">보러가기</a></li></td>
 								</tr>
 								<%
 										}
@@ -312,8 +315,10 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
+      
 	</div>
 
    <!-- Footer -->

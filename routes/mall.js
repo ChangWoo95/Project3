@@ -469,8 +469,9 @@ router.post('/sale_detail/:I_id', function(req, res, next) {
 	   var sql = "insert into onsale(I_id,startdate,enddate,sale) values (?,?,?,?)";
  
 	   connection.query(sql, datas, function(err, row){
-		  if(err) console.error("장바구니 insert err : ", err);
-		  else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/cart';</script>");
+		  if(err) console.error("이벤트 insert err : ", err);
+		  else res.send("<script>alert('핫딜이벤크가 추가되었습니다.');location.href='/mall/event~~';</script>");
+		  //연결링크부터 추가해야됨
 		  connection.release();
 	   });
 	});
@@ -668,34 +669,32 @@ router.get('/purchase', function(req, res, next) {
 router.post('/purchase', function(req, res, next) {
 	var pk = req.session.pk;
 	var c = req.body.btn_cancel;
-
+ 
 	console.log("확인! : "+c);
 	var datas = [];
 	var sql = "";
-
+ 
 	sql += "update item set cnt = (select cnt from (select * from item where I_id= (select I_id from purchase where P_id=?) ) as tmp) + (select val from purchase where P_id = ?) where I_id= (select I_id from purchase where P_id = ?);";
 	datas.push(c);
 	datas.push(c);
 	datas.push(c);
-
+ 
 	sql += "delete from orderlist where C_id = ? and I_id = (select I_id from purchase where P_id = ?) and date = (select date from purchase where P_id = ?);";
 	datas.push(pk);
 	datas.push(c);
 	datas.push(c);
-
+ 
 	sql += "delete from purchase where I_id = (select * from (select I_id from purchase where P_id = ?) as x);";
-	datas.push(c);	
+	datas.push(c);   
 	
 	pool.getConnection(function(err, connection){
-		connection.query(sql,datas, function(err, result){
-			if(err) console.error("구매내역 발생 err : ", err);
-			else {
-				res.redirect('purchase');	
-			}
-			connection.release();
-		});
+	   connection.query(sql,datas, function(err, result){
+		  if(err) console.error("구매내역 발생 err : ", err);
+		  else res.send("<script>alert('구매취소가 완료되었습니다.');location.href='/mall/purchase';</script>");   
+		  connection.release();
+	   });
 	});
-});
+ });
 
 
 router.get('/review', function(req, res, next) {

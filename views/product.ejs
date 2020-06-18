@@ -83,18 +83,17 @@
                <!-- Menu desktop -->
                <div class="menu-desktop">
                   <ul class="main-menu">
+<<<<<<< HEAD
+                     <li><a href="/mall/product">상품조회</a></li>
+					 <li><a href="/mall/product_ranking">상품랭킹</a></li>
+=======
                      <li class="label1" data-label1="hot"><a href="/mall/product">상품조회</a></li>
+>>>>>>> upstream/master
                      <li><a href="/mall/cart">장바구니</a></li>
                      <li><a href="/mall/purchase">구매내역</a></li>
                   </ul>
                </div>   
 
-               <!-- Icon header -->
-               <div class="wrap-icon-header flex-w flex-r-m">
-                  <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="<%=cart.length%>">
-                     <i class="zmdi zmdi-shopping-cart"></i>
-                  </div>
-               </div>
             </nav>
          </div>   
       </div>
@@ -104,13 +103,6 @@
          <!-- Logo moblie -->      
          <div class="logo-mobile">
             <a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
-         </div>
-
-         <!-- Icon header -->
-         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="<%=cart.length%>">
-               <a href="/mall/cart"><i class="zmdi zmdi-shopping-cart"></i></a>
-            </div>
          </div>
 
          <!-- Button show menu -->
@@ -145,21 +137,11 @@
          </ul>
 
          <ul class="main-menu-m">
-            <li>
-               <a href="/mall">Home</a>
-            </li>
-
-            <li>
-               <a href="/mall/product" class="label1 rs1" data-label1="hot">상품조회</a>
-            </li>
-
-            <li>
-               <a href="/mall/cart">장바구니</a>
-            </li>
-
-            <li>
-               <a href="/mall/purchase">구매내역</a>
-            </li>
+            <li><a href="/mall">Home</a></li>
+            <li><a href="/mall/product">상품조회</a></li>
+			<li><a href="/mall/product_ranking">상품랭킹</a></li>
+			<li><a href="/mall/cart">장바구니</a></li>
+            <li><a href="/mall/purchase">구매내역</a></li>
          </ul>
       </div>
    </header>
@@ -326,6 +308,17 @@
                            <% }else{ %><script>numberWithCommas(<%=rows[i].price%>);</script> <% } %>
                         </span>
                      </div>
+<<<<<<< HEAD
+
+                     <div class="block2-txt-child2 flex-r p-t-3">
+                        <% for(var j = 0; j < recommend.length; j++){ %>
+							<% if(rows[i].I_id == recommend[j].I_id){ %>
+								<li class="label1" data-label1="추천"></li>
+						<%	}	%>
+					<%	}	%>
+                     </div>
+=======
+>>>>>>> upstream/master
                   </div>
                </div>
 

@@ -21,7 +21,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'gosemvhs1~@#',
+	password: 'sw8836^^',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -429,15 +429,17 @@ router.get('/myaccount_update', function(req, res, next) {
 
 /*상품보기 get method*/
 router.get('/product', function(req, res, next) {
-	var pk = req.session.pk;
+    var pk = req.session.pk;
+    var datas = [pk, pk + 1, pk];
 	pool.getConnection(function(err, connection){
 		var sql1 = "select I.*,O.sale,O.startdate,O.enddate,TIMESTAMPDIFF(day,now(),O.enddate) as diff from item as I left join onsale as O on I.I_id = O.I_id and TIMESTAMPDIFF(second,O.startdate,now()) > 0 order by I.I_id;";
 		var sql2 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
-		connection.query(sql1+sql2,pk, function(err, result){
+		var sql3 = "select I_id from purchase where purchase.C_id=? and I_id not in (select I_id from purchase where purchase.C_id=?);";
+		connection.query(sql1+sql2+sql3, datas, function(err, result){
 			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
 			else {
 				var sum = 0;
-				res.render('product',{session: req.session, rows: result[0], cart: result[1], sum: sum});
+				res.render('product',{session: req.session, rows: result[0], cart: result[1], recommend: result[2], sum: sum});
 			}
 			connection.release();
 		});
@@ -480,12 +482,23 @@ router.post('/product_detail/:I_id', function(req, res, next) {
 		var datas = [id,pk,val];
 		var sql = "insert into cart(I_id,C_id,val) values (?,?,?)";
 
+/*상품조회 post method*/
+router.post('/product_detail/:I_id', function(req, res, next) {
+   var id = req.params.I_id;
+   var pk = req.session.pk;
+   var val = req.body.num_product;
+   console.log(val);
+   pool.getConnection(function(err, connection){
+      var datas = [id,pk,val];
+      var sql = "insert into cart(I_id,C_id,val) values (?,?,?)";
+
 		connection.query(sql, datas, function(err, row){
 			if(err) console.error("장바구니 insert err : ", err);
 			else res.send("<script>alert('장바구니에 추가되었습니다.');location.href='/mall/cart';</script>");
 			connection.release();
 		});
 	});
+
 });
 
 /*상품랭킹 get method*/
@@ -656,6 +669,7 @@ router.get('/purchase', function(req, res, next) {
 		});
 	});
 });
+
 
 router.post('/purchase', function(req, res, next) {
 	var pk = req.session.pk;

@@ -37,7 +37,18 @@
    <link rel="stylesheet" type="text/css" href="css/util.css">
    <link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+<style> 
+   #m_data{ border-top-left-radius: 5px; border-bottom-left-radius: 5px; margin-right:-4px; 
+         border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
+   #d_data{ border-top-left-radius: 5px; border-bottom-left-radius: 5px; margin-right:-4px; 
+         border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
+   #h_data{ border-top-left-radius: 5px; border-bottom-left-radius: 5px; margin-right:-4px; 
+         border-top-right-radius: 5px; border-bottom-right-radius: 5px;}                    
+   #btn_g button{ border: 1px solid skyblue; background-color: rgba(0,0,0,0); color: skyblue; padding: 5px; }
+   #btn_g button:hover{ color:white; background-color: skyblue; } 
+</style>
 </head>
+
 <body class="animsition">
    
    <!-- Header -->
@@ -243,38 +254,90 @@
       </div>
    </div>
 
-   <script>
-      function numberWithCommas(x) {
-          document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
+
+<script>
+   var mon_label = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+   var mon_data = [0,0,0,0,0,0,0,0,0,0,0,0];
+   var mon_label2 = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+   var mon_data2 = [0,0,0,0,0,0,0,0,0,0,0,0];
+   var daily_label = ["1일","2일","3일","4일","5일","6일","7일","8일","9일","10일","11일","12일","13일","14일","15일","16일","17일","18일","19일","20일","21일","22일","23일","24일","25일","26일","27일","28일","29일","30일","31일"];
+   var daily_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+   var hour_label = ["00h","01h","02h","03h","04h","05h","06h","07h","08h","09h","10h","11h","12h","13h","14h","15h","16h","17h","18h","19h","20h","21h","22h","23h","24h"];
+   var hour_data = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+   var mon_bc = [];
+   var mon_bb = [];
+   var mon_bc2 = [];
+   var mon_bb2 = [];   
+   for(var i=0;i<12;i++){
+      var x = Math.floor(Math.random() * 256);
+      var y = Math.floor(Math.random() * 256);
+      var z = Math.floor(Math.random() * 256);
+      var b_c = "rgba(" + x + "," + y + "," + z + "," + "0.2)";
+      var b_b = "rgba(" + x + "," + y + "," + z + "," + "1)";
+      mon_bc.push(b_c);
+      mon_bb.push(b_b);       
+      mon_bc2.push(b_c);
+      mon_bb2.push(b_b);      
+   }
+   var daily_bc = [];
+   var daily_bb = [];
+   for(var i=0;i<31;i++){
+      var x = Math.floor(Math.random() * 256);
+      var y = Math.floor(Math.random() * 256);
+      var z = Math.floor(Math.random() * 256);
+      var b_c = "rgba(" + x + "," + y + "," + z + "," + "0.2)";
+      var b_b = "rgba(" + x + "," + y + "," + z + "," + "1)";
+      daily_bc.push(b_c);
+      daily_bb.push(b_b);            
+   }   
+   var hour_bc = [];
+   var hour_bb = [];
+   for(var i=0;i<24;i++){
+      var x = Math.floor(Math.random() * 256);
+      var y = Math.floor(Math.random() * 256);
+      var z = Math.floor(Math.random() * 256);
+      var b_c = "rgba(" + x + "," + y + "," + z + "," + "0.2)";
+      var b_b = "rgba(" + x + "," + y + "," + z + "," + "1)";
+      hour_bc.push(b_c);
+      hour_bb.push(b_b);            
+   } 
+
+   function ch_val(str,cnt,sale){
+      if(str == "mon") {
+         mon_data[cnt-1] = sale;
+         mon_data2[cnt-1] = sale;
       }
-   </script>
+      else if(str == "day") daily_data[cnt-1] = sale;
+      else hour_data[cnt-1] = sale;
+   }
+
+   function numberWithCommas(x) {
+      document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
+   }
+
+</script>
+
+<%for(var i=0; i< g_mon.length; i++){%>
+   <script>ch_val("mon",<%=g_mon[i].mon%>,<%=g_mon[i].sale%>);</script>
+<% } %>
+<%for(var i=0; i< g_day.length; i++){%>
+   <script>ch_val("day",<%=g_day[i].day%>,<%=g_day[i].sale%>);</script>
+<% } %>
+<%for(var i=0; i< g_hour.length; i++){%>
+   <script>ch_val("hour",<%=g_hour[i].hour%>,<%=g_hour[i].sale%>);</script>
+<% } %>
 
 <!--차트 뿌리기-->
    <br><br>
-   <div class="tab01">
-      <ul class="nav nav-tabs" role="tablist">
-         <li class="nav-item p-b-10">
-            <a class="nav-link active" data-toggle="tab" href="#description" role="tab">월 별</a>
-         </li>
-         <li class="nav-item p-b-10">
-            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">오늘의 매출</a>
-         </li>
-      </ul>
-
-      <div class="tab-pane fade show active" id="description" role="tabpanel"> 
-         <% var mydata = [12, 10, 3, 5, 2, 3,10]; %>
-         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
-      </div>
-      <div class="tab-pane fade" id="information" role="tabpanel">
-         <% var mydata = [12, 19, 3, 5, 2, 3,11]; %>
-         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
-      </div>
-      <div class="tab-pane fade" id="reviews" role="tabpanel">
-         <% var mydata = [12, 19, 3, 5, 2, 3,15]; %>
-         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
-      </div>
+ <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"> 
+   <div id="btn_g">
+      <button type="button" id="m_data">월 별</button>
+      <button type="button" id="d_data">일 별 </button>
+      <button type="button" id="h_data">시간 별</button>
    </div>
-<!--차트 뿌리기 끝!-->
+   <canvas id="myChart" width="400" height="400"></canvas>
+</div>
 
    <form class="bg0 p-t-75 p-b-85">
    <center><H3>판매내역</H3></center><br><br>

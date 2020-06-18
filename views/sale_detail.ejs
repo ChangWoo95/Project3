@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<% if(session.auth != 'a'){ %>
+	<script>alert('접근권한이 없습니다.');location.href='/mall/';</script>
+ <% } %>
+<html lang="en">
+<head>
+	<title>Sale Detail</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/mall/images/icons/favicon.png"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/fonts/linearicons-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/slick/slick.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/MagnificPopup/magnific-popup.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/mall/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/mall/css/main.css">
+<!--===============================================================================================-->
+	<script>
+		function numberWithCommas(x) {
+			document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
+		};
+		
+		function num_change(){
+			var x = Number($("#num_product").val());
+			if( (x + 1) == 100) {
+				$("#div_plus").css('pointer-events','none');
+				$("#num-product").val(x+1);
+			}
+			else{
+				$("#div_plus").css('pointer-events','auto');
+			}
+			if( (x+1) > 1){
+				$("#div_minus").css('pointer-events','auto');
+			}
+			else $("#div_minus").css('pointer-events','none');
+		}	
+	</script>
+</head>
+<body class="animsition">
+	
+	<!-- Header -->
+	<header class="header-v4">
+		<!-- Header desktop -->
+		<div class="container-menu-desktop">
+			<!-- Topbar -->
+			<div class="top-bar">
+				<div class="content-topbar flex-sb-m h-full container">
+					<div class="left-top-bar">
+						<h2><%= session.name %>님 안녕하세요!</h2>
+					</div>
+
+					<div class="right-top-bar flex-w h-full">
+						<a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
+							Logout
+						</a>						
+						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
+							My Account
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="wrap-menu-desktop how-shadow1">
+				<nav class="limiter-menu-desktop container">
+					
+					<!-- Logo desktop -->		
+					<a href="/mall" class="logo">
+						<img src="/mall/images/icons/logo-01.png" alt="IMG-LOGO">
+					</a>
+
+					<!-- Menu desktop -->
+					<div class="menu-desktop">
+						<ul class="main-menu">
+						   <li><a href="/mall/user_manage">회원관리</a>
+						   </li>
+						   <li class="active-menu">
+							  <a href="/mall/sale_manage">세일 관리</a>
+						   </li>
+						</ul>
+					 </div>
+				</nav>
+			</div>	
+		</div>
+
+		<!-- Header Mobile -->
+		<div class="wrap-header-mobile">
+			<!-- Logo moblie -->		
+			<div class="logo-mobile">
+				<a href="/mall"><img src="/mall/images/icons/logo-01.png" alt="IMG-LOGO"></a>
+			</div>
+
+			<!-- Button show menu -->
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+			</div>
+		</div>
+
+
+		<!-- Menu Mobile -->
+		<div class="menu-mobile">
+			<ul class="topbar-mobile">
+				<li>
+					<div class="left-top-bar">
+						<h2><%= session.name %>님 안녕하세요!</h2>
+					</div>
+				</li>
+
+				<li>
+					<div class="right-top-bar flex-w h-full">
+						<a href="/mall/logout" class="flex-c-m p-lr-10 trans-04">
+							Logout
+						</a>
+
+						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
+							My Account
+						</a>
+					</div>
+				</li>
+			</ul>
+
+			<ul class="main-menu-m">
+				<li>
+					<a href="/mall">Home</a>
+				</li>
+
+				<li>
+					<a href="/mall/user_manage">회원관리</a>
+				</li>
+
+				<li>
+					<a href="/mall/sale_manage">세일관리</a>
+				</li>
+			</ul>
+		</div>
+	</header>
+
+	<!-- Product Detail -->
+	<section class="sec-product-detail bg0 p-t-65 p-b-60">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-lg-7 p-b-30">
+					<div class="p-l-25 p-r-30 p-lr-0-lg">
+						<div class="wrap-slick3 flex-sb flex-w">
+							<div class="wrap-slick3-dots"></div>
+							<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+							<div class="slick3 gallery-lb">
+								<div class="item-slick3" data-thumb="/mall/images/<%=row.img%>">
+									<div class="wrap-pic-w pos-relative">
+										<img src="/mall/images/<%=row.img%>" alt="IMG-PRODUCT">
+
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="/mall/images/<%=row.img%>">
+											<i class="fa fa-expand"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-5 p-b-30">
+					<div class="p-r-50 p-t-5 p-lr-0-lg">
+						<h4 class="mtext-105 cl2 js-name-detail p-b-14">
+							<%=row.name%>
+						</h4>
+
+						<span class="mtext-106 cl2">
+							가격: <script>numberWithCommas(<%=row.price%>);</script>
+						</span><br><br>		
+						<form>
+							
+						</form>
+						<!--  -->
+						<div class="p-t-33">
+							<form method="post" action="/mall/sale_detail/<%=row.I_id%>">
+								<p>이벤트 시작 날짜 : </p>
+								<div><input type="date" id="startdate" name="startdate" value="2020-06-18"></div>
+								<br>
+								<p>이벤트 종료 날짜 : </p>
+								<div><input type="date" id="enddate" name="enddate" value="2020-06-18"></div><br><br><br>
+								<div class="flex-w flex-r-m p-b-10">
+									<div class="size-204 flex-w flex-m respon6-next">
+										<div id="except_num" class="wrap-num-product flex-w m-r-20 m-tb-10">
+											<div id="div_minus" style="pointer-events:none" class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" onclick="num_change()">
+												<i class="fs-16 zmdi zmdi-minus"></i>
+											</div>
+
+											<input class="mtext-104 cl3 txt-center num-product" type="number" id="sale" name="sale" value="1"/>
+
+											<div id="div_plus" class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" onclick="num_change()">
+												<i class="fs-16 zmdi zmdi-plus"></i>
+											</div>
+										</div>
+										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+											세일 적용(%)
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+
+
+   <!-- Footer -->
+   <footer class="bg3 p-t-75 p-b-32">
+      <div class="container"></div>
+
+         <div class="p-t-40">
+            <div class="flex-c-m flex-w p-b-18">
+               <a href="#" class="m-all-1">
+                  <img src="/mall/images/icons/icon-pay-01.png" alt="ICON-PAY">
+               </a>
+
+               <a href="#" class="m-all-1">
+                  <img src="/mall/images/icons/icon-pay-02.png" alt="ICON-PAY">
+               </a>
+
+               <a href="#" class="m-all-1">
+                  <img src="/mall/images/icons/icon-pay-03.png" alt="ICON-PAY">
+               </a>
+
+               <a href="#" class="m-all-1">
+                  <img src="/mall/images/icons/icon-pay-04.png" alt="ICON-PAY">
+               </a>
+
+               <a href="#" class="m-all-1">
+                  <img src="/mall/images/icons/icon-pay-05.png" alt="ICON-PAY">
+               </a>
+            </div>
+
+            <p class="stext-107 cl6 txt-center">
+               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with 정창우, 윤상욱, 김효주, 이원형
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+            </p>
+         </div>
+      </div>
+   </footer>
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+	
+
+<!--===============================================================================================-->	
+	<script src="/mall/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/bootstrap/js/popper.js"></script>
+	<script src="/mall/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+	</script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/mall/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/slick/slick.min.js"></script>
+	<script src="/mall/js/slick-custom.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/parallax100/parallax100.js"></script>
+	<script>
+        $('.parallax100').parallax100();
+	</script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+	<script>
+		$('.gallery-lb').each(function() { // the containers for all your galleries
+			$(this).magnificPopup({
+		        delegate: 'a', // the selector for gallery item
+		        type: 'image',
+		        gallery: {
+		        	enabled:true
+		        },
+		        mainClass: 'mfp-fade'
+		    });
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/isotope/isotope.pkgd.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/sweetalert/sweetalert.min.js"></script>
+	<script>
+		$('.js-addwish-b2, .js-addwish-detail').on('click', function(e){
+			e.preventDefault();
+		});
+
+		$('.js-addwish-b2').each(function(){
+			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+
+				$(this).addClass('js-addedwish-b2');
+				$(this).off('click');
+			});
+		});
+
+		$('.js-addwish-detail').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+
+				$(this).addClass('js-addedwish-detail');
+				$(this).off('click');
+			});
+		});
+
+		/*---------------------------------------------*/
+
+		$('.js-addcart-detail').each(function(){
+			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to cart !", "success");
+			});
+		});
+	
+	</script>
+<!--===============================================================================================-->
+	<script src="/mall/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			$(this).css('position','relative');
+			$(this).css('overflow','hidden');
+			var ps = new PerfectScrollbar(this, {
+				wheelSpeed: 1,
+				scrollingThreshold: 1000,
+				wheelPropagation: false,
+			});
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="/mall/js/main.js"></script>
+
+</body>
+</html>

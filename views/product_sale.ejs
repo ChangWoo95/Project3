@@ -119,14 +119,14 @@
 
             <li>
                <div class="right-top-bar flex-w h-full">
-				<% if(session.islogined){ %>
-				<a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
-					Logout
-				</a>
-				<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
-					My Account
-				</a>
-				<% } %>
+            <% if(session.islogined){ %>
+            <a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
+               Logout
+            </a>
+            <a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
+               My Account
+            </a>
+            <% } %>
                </div>
             </li>
          </ul>
@@ -249,9 +249,42 @@
       }
    </script>
 
+<!--차트 뿌리기-->
+   <br><br>
+   <div class="tab01">
+      <ul class="nav nav-tabs" role="tablist">
+         <li class="nav-item p-b-10">
+            <a class="nav-link active" data-toggle="tab" href="#description" role="tab">월 별</a>
+         </li>
+
+         <li class="nav-item p-b-10">
+            <a class="nav-link" data-toggle="tab" href="#information" role="tab">제품별</a>
+         </li>
+
+         <li class="nav-item p-b-10">
+            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">오늘의 매출</a>
+         </li>
+      </ul>
+
+      <div class="tab-pane fade show active" id="description" role="tabpanel"> 
+         <% var mydata = [12, 19, 3, 5, 2, 3,20]; %>
+         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
+      </div>
+      <div class="tab-pane fade" id="information" role="tabpanel">
+         <% var mydata = [12, 19, 3, 5, 2, 3,11]; %>
+         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
+      </div>
+      <div class="tab-pane fade" id="reviews" role="tabpanel">
+         <% var mydata = [12, 19, 3, 5, 2, 3,15]; %>
+         <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
+      </div>
+   </div>
+<!--차트 뿌리기 끝!-->
+
    <form class="bg0 p-t-75 p-b-85">
-	<center><H3>판매내역</H3></center><br><br>
+   <center><H3>판매내역</H3></center><br><br>
       <div class="container">
+      
          <div class="row">
             <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
                <div class="m-l-25 m-r--38 m-lr-0-xl">
@@ -344,6 +377,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
          <i class="zmdi zmdi-chevron-up"></i>
       </span>
    </div>
+
+<!--------------------------------------------차트------------------------------------------------------->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="js/sale_chart.js"></script>
 
 <!--===============================================================================================-->   
    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

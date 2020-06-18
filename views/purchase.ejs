@@ -1,311 +1,311 @@
 <!DOCTYPE html>
 <% if(session.auth != 'c' && !session.islogined){ %>
-	<script>alert('로그인 후 이용해주세요');location.href='/mall/login';</script>
+   <script>alert('로그인 후 이용해주세요');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">
 <head>
-	<title>Purchase</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+   <title>Purchase</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->   
+   <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->   
+   <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+   <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+   <link rel="stylesheet" type="text/css" href="css/util.css">
+   <link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-	<script>
-		function numberWithCommas(x) {
-    		document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
-		}
+   <script>
+      function numberWithCommas(x) {
+          document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
+      }
 
-		function frmcheckout(){
-			if(confirm("정말 취소하시겠습니까?")) {
-				$("#frm").attr("method", "post");
-				$("#frm").attr("action", "/mall/purchase");
-				document.frm.submit();
-			}
-			else return false;
-		}  
+      function frmcheckout(){
+         if(confirm("정말 취소하시겠습니까?")) {
+            $("#frm").attr("method", "post");
+            $("#frm").attr("action", "/mall/purchase");
+            document.frm.submit();
+         }
+         else return false;
+      }  
 
-		function frmsubmit(){
-			$("#frm").attr("method", "get");
-        	$("#frm").attr("action", "/mall/review");
-        	document.frm.submit();
-		}      
+      function frmsubmit(){
+         $("#frm").attr("method", "get");
+           $("#frm").attr("action", "/mall/review");
+           document.frm.submit();
+      }      
     </script>
 
 </head>
 <body class="animsition">
-	
-	<!-- Header -->
-	<header class="header-v4">
-		<!-- Header desktop -->
-		<div class="container-menu-desktop">
-			<!-- Topbar -->
-			<div class="top-bar">
-				<div class="content-topbar flex-sb-m h-full container">
-					<div class="left-top-bar">
-						<h2><%= session.name %>님 안녕하세요!</h2>
-					</div>
+   
+   <!-- Header -->
+   <header class="header-v4">
+      <!-- Header desktop -->
+      <div class="container-menu-desktop">
+         <!-- Topbar -->
+         <div class="top-bar">
+            <div class="content-topbar flex-sb-m h-full container">
+               <div class="left-top-bar">
+                  <h2><%= session.name %>님 안녕하세요!</h2>
+               </div>
 
-					<div class="right-top-bar flex-w h-full">
-						<a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
-							Logout
-						</a>
-						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-					</div>
-				</div>
-			</div>
+               <div class="right-top-bar flex-w h-full">
+                  <a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
+                     Logout
+                  </a>
+                  <a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
+                     My Account
+                  </a>
+               </div>
+            </div>
+         </div>
 
-			<div class="wrap-menu-desktop how-shadow1">
-				<nav class="limiter-menu-desktop container">
-					
-					<!-- Logo desktop -->		
-					<a href="/mall" class="logo">
-						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
-					</a>
+         <div class="wrap-menu-desktop how-shadow1">
+            <nav class="limiter-menu-desktop container">
+               
+               <!-- Logo desktop -->      
+               <a href="/mall" class="logo">
+                  <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+               </a>
 
-					<!-- Menu desktop -->
-					<div class="menu-desktop">
-						<ul class="main-menu">
-							<li class="label1" data-label1="hot"><a href="/mall/product">상품조회</a></li>
-							<li><a href="/mall/cart">장바구니</a></li>
-							<li><a href="/mall/purchase">구매내역</a></li>
-						</ul>
-					</div>	
-				</nav>
-			</div>
-		</div>
+               <!-- Menu desktop -->
+               <div class="menu-desktop">
+                  <ul class="main-menu">
+                     <li class="label1" data-label1="hot"><a href="/mall/product">상품조회</a></li>
+                     <li><a href="/mall/cart">장바구니</a></li>
+                     <li><a href="/mall/purchase">구매내역</a></li>
+                  </ul>
+               </div>   
+            </nav>
+         </div>
+      </div>
 
-		<!-- Header Mobile -->
-		<div class="wrap-header-mobile">
-			<!-- Logo moblie -->		
-			<div class="logo-mobile">
-				<a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
-			</div>
+      <!-- Header Mobile -->
+      <div class="wrap-header-mobile">
+         <!-- Logo moblie -->      
+         <div class="logo-mobile">
+            <a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+         </div>
 
-			<!-- Button show menu -->
-			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
-				<span class="hamburger-box">
-					<span class="hamburger-inner"></span>
-				</span>
-			</div>
-		</div>
+         <!-- Button show menu -->
+         <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+            <span class="hamburger-box">
+               <span class="hamburger-inner"></span>
+            </span>
+         </div>
+      </div>
 
 
-		<!-- Menu Mobile -->
-		<div class="menu-mobile">
-			<ul class="topbar-mobile">
-				<li>
-					<div class="left-top-bar">
-						<h2><%= session.name %>님 안녕하세요!</h2>
-					</div>
-				</li>
+      <!-- Menu Mobile -->
+      <div class="menu-mobile">
+         <ul class="topbar-mobile">
+            <li>
+               <div class="left-top-bar">
+                  <h2><%= session.name %>님 안녕하세요!</h2>
+               </div>
+            </li>
 
-				<li>
-					<div class="right-top-bar flex-w h-full">
-						<a href="/mall/logout" class="flex-c-m p-lr-10 trans-04">
-							Logout
-						</a>
+            <li>
+               <div class="right-top-bar flex-w h-full">
+                  <a href="/mall/logout" class="flex-c-m p-lr-10 trans-04">
+                     Logout
+                  </a>
 
-						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
-							My Account
-						</a>
-					</div>
-				</li>
-			</ul>
+                  <a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
+                     My Account
+                  </a>
+               </div>
+            </li>
+         </ul>
 
-			<ul class="main-menu-m">
-				<li>
-					<a href="/mall">Home</a>
-				</li>
+         <ul class="main-menu-m">
+            <li>
+               <a href="/mall">Home</a>
+            </li>
 
-				<li>
-					<a href="/mall/product" class="label1 rs1" data-label1="hot">상품조회</a>
-				</li>
+            <li>
+               <a href="/mall/product" class="label1 rs1" data-label1="hot">상품조회</a>
+            </li>
 
-				<li>
-					<a href="/mall/cart">장바구니</a>
-				</li>
+            <li>
+               <a href="/mall/cart">장바구니</a>
+            </li>
 
-				<li>
-					<a href="/mall/purchase">구매내역</a>
-				</li>
-			</ul>
-		</div>
-	</header>
+            <li>
+               <a href="/mall/purchase">구매내역</a>
+            </li>
+         </ul>
+      </div>
+   </header>
 
-	<!-- breadcrumb -->
-	<div class="container">
-		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-			<a href="/mall" class="stext-109 cl8 hov-cl1 trans-04">
-				Home
-				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-			</a>
+   <!-- breadcrumb -->
+   <div class="container">
+      <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+         <a href="/mall" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+         </a>
 
-			<span class="stext-109 cl4">
-				Purchase
-			</span>
-		</div>
-	</div>
-		
+         <span class="stext-109 cl4">
+            Purchase
+         </span>
+      </div>
+   </div>
+      
 
-	<!-- Shoping Cart -->
-	 <form class="bg0 p-t-80 p-b-90" id="frm">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
-					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<div class="wrap-table-shopping-cart">
-							<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-2"><center>상품정보</center></th>
-									<th class="column-1">이름</th>
-									<th class="column-3"><center>주문일자</center></th>
-									<th class="column-3">주문금액(수량)</th>
-									<th class="column-3"><center>주문상태</center></th>
-									<th class="column-5">후기 작성</th>
-								</tr>
-							<% if(pur.length == 0) { %>
-								<tr class="table_row">
-									<td colspan="6">
-										<center>구매내역이 존재하지 않습니다.</center>
-									</td>
-								</tr>
+   <!-- Shoping Cart -->
+    <form class="bg0 p-t-80 p-b-90" id="frm">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">
+               <div class="m-l-25 m-r--38 m-lr-0-xl">
+                  <div class="wrap-table-shopping-cart">
+                     <table class="table-shopping-cart">
+                        <tr class="table_head">
+                           <th class="column-2"><center>상품정보</center></th>
+                           <th class="column-1">이름</th>
+                           <th class="column-3"><center>주문일자</center></th>
+                           <th class="column-3">주문금액(수량)</th>
+                           <th class="column-3"><center>주문상태</center></th>
+                           <th class="column-5">후기 작성</th>
+                        </tr>
+                     <% if(pur.length == 0) { %>
+                        <tr class="table_row">
+                           <td colspan="6">
+                              <center>구매내역이 존재하지 않습니다.</center>
+                           </td>
+                        </tr>
 
-							<% }else{ %>
+                     <% }else{ %>
 
-							<% for(var i =0; i < pur.length; i++) {%>
-								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/<%=pur[i].img%>" alt="IMG">
-										</div>
-									</td>
-									<td class="column-3"><center><%=pur[i].name%></center></td>
-									<td class="column-3"><center><%=pur[i].date%></center></td>
-									<td class="column-3"><script>numberWithCommas(<%= (pur[i].price * pur[i].val) %>);</script>(<%=pur[i].val%>)</td>
-							<% 		if( diff[i] == 'T') { %>
-									<td class="column-3"><center><button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="btn_cancel"value="<%=pur[i].P_id%>" onclick="return frmcheckout()">주문 취소</button></center></td>
-							<% }else{ %>
-									<td class="column-3"><center>구매 확정</center></td>
-							<% } %>							
-									<td class="column-4"><center><button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="btn_re" name="btn_re" value="<%=pur[i].I_id%>" onclick="return frmsubmit()">후기 작성</button></center></td>
-								</tr>
-							<% } %>
-							<% } %>									
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-		
-	
-		
+                     <% for(var i =0; i < pur.length; i++) {%>
+                        <tr class="table_row">
+                           <td class="column-1">
+                              <div class="how-itemcart1">
+                                 <img src="images/<%=pur[i].img%>" alt="IMG">
+                              </div>
+                           </td>
+                           <td class="column-3"><center><%=pur[i].name%></center></td>
+                           <td class="column-3"><center><%=pur[i].date%></center></td>
+                           <td class="column-3"><script>numberWithCommas(<%= (pur[i].price * pur[i].val) %>);</script>(<%=pur[i].val%>)</td>
+                     <%       if( diff[i] == 'T') { %>
+                           <td class="column-3"><center><button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="btn_cancel"value="<%=pur[i].P_id%>" onclick="return frmcheckout()">주문 취소</button></center></td>
+                     <% }else{ %>
+                           <td class="column-3"><center>구매 확정</center></td>
+                     <% } %>                     
+                           <td class="column-4"><center><button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="submit" id="btn_re" name="btn_re" value="<%=pur[i].I_id%>" onclick="return frmsubmit()">후기 작성</button></center></td>
+                        </tr>
+                     <% } %>
+                     <% } %>                           
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+      
+   
+      
 
-	<!-- Footer -->
-	<footer class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="p-t-40">
-				<div class="flex-c-m flex-w p-b-18">
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
-					</a>
+   <!-- Footer -->
+   <footer class="bg3 p-t-75 p-b-32">
+      <div class="container">
+         <div class="p-t-40">
+            <div class="flex-c-m flex-w p-b-18">
+               <a href="#" class="m-all-1">
+                  <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+               </a>
 
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
-					</a>
+               <a href="#" class="m-all-1">
+                  <img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+               </a>
 
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
-					</a>
+               <a href="#" class="m-all-1">
+                  <img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+               </a>
 
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
-					</a>
+               <a href="#" class="m-all-1">
+                  <img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+               </a>
 
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
-					</a>
-				</div>
+               <a href="#" class="m-all-1">
+                  <img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+               </a>
+            </div>
 
-				<p class="stext-107 cl6 txt-center">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <p class="stext-107 cl6 txt-center">
+               <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Studio722 is made with 정창우, 윤상욱, 김효주, 이원형
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-				</p>
-			</div>
-		</div>
-	</footer>
+            </p>
+         </div>
+      </div>
+   </footer>
 
 
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-	</div>
+   <!-- Back to top -->
+   <div class="btn-back-to-top" id="myBtn">
+      <span class="symbol-btn-back-to-top">
+         <i class="zmdi zmdi-chevron-up"></i>
+      </span>
+   </div>
 
-<!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->   
+   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+   <script src="vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+   <script src="vendor/bootstrap/js/popper.js"></script>
+   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-	</script>
+   <script src="vendor/select2/select2.min.js"></script>
+   <script>
+      $(".js-select2").each(function(){
+         $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+         });
+      })
+   </script>
 <!--===============================================================================================-->
-	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+   <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script>
-		$('.js-pscroll').each(function(){
-			$(this).css('position','relative');
-			$(this).css('overflow','hidden');
-			var ps = new PerfectScrollbar(this, {
-				wheelSpeed: 1,
-				scrollingThreshold: 1000,
-				wheelPropagation: false,
-			});
+   <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+   <script>
+      $('.js-pscroll').each(function(){
+         $(this).css('position','relative');
+         $(this).css('overflow','hidden');
+         var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+         });
 
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
+         $(window).on('resize', function(){
+            ps.update();
+         })
+      });
+   </script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+   <script src="js/main.js"></script>
 
 </body>
 </html>

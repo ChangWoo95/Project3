@@ -256,23 +256,21 @@
          <li class="nav-item p-b-10">
             <a class="nav-link active" data-toggle="tab" href="#description" role="tab">월 별</a>
          </li>
-
-         <li class="nav-item p-b-10">
-            <a class="nav-link" data-toggle="tab" href="#information" role="tab">제품별</a>
-         </li>
-
          <li class="nav-item p-b-10">
             <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">오늘의 매출</a>
          </li>
       </ul>
 
-      <div class="tab-pane fade show active" id="description" role="tabpanel">      
+      <div class="tab-pane fade show active" id="description" role="tabpanel"> 
+         <% var mydata = [12, 10, 3, 5, 2, 3,10]; %>
          <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
       </div>
       <div class="tab-pane fade" id="information" role="tabpanel">
+         <% var mydata = [12, 19, 3, 5, 2, 3,11]; %>
          <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
       </div>
       <div class="tab-pane fade" id="reviews" role="tabpanel">
+         <% var mydata = [12, 19, 3, 5, 2, 3,15]; %>
          <div class="col-lg-6 col-xl-6 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>
       </div>
    </div>
@@ -281,7 +279,6 @@
    <form class="bg0 p-t-75 p-b-85">
    <center><H3>판매내역</H3></center><br><br>
       <div class="container">
-         <!--<div class="col-lg-10 col-xl-10 m-lr-auto m-b-50"><canvas id="myChart" width="400" height="400"></canvas></div>-->
       
          <div class="row">
             <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50">

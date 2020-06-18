@@ -1,75 +1,75 @@
 ﻿<!DOCTYPE html>
 <% if(session.auth != 's' && !session.islogined){ %>
-	<script>alert('접근권한이 없습니다.');location.href='/mall/login';</script>
+   <script>alert('접근권한이 없습니다.');location.href='/mall/login';</script>
 <% } %>
 <html lang="en">
 <head>
-	<title>Product</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+   <title>Product</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->   
+   <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+   <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->   
+   <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+   <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+   <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->   
+   <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+   <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+   <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+   <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+   <link rel="stylesheet" type="text/css" href="css/util.css">
+   <link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
-	
-	<!-- Header -->
-	<header class="header-v4">
-		<!-- Header desktop -->
-		<div class="container-menu-desktop">
-			<!-- Topbar -->
-			<div class="top-bar">
-				<div class="content-topbar flex-sb-m h-full container">
-					<div class="left-top-bar">
-						<h2><%= session.name %>님 안녕하세요!</h2>
-					</div>
+   
+   <!-- Header -->
+   <header class="header-v4">
+      <!-- Header desktop -->
+      <div class="container-menu-desktop">
+         <!-- Topbar -->
+         <div class="top-bar">
+            <div class="content-topbar flex-sb-m h-full container">
+               <div class="left-top-bar">
+                  <h2><%= session.name %>님 안녕하세요!</h2>
+               </div>
 
-					<div class="right-top-bar flex-w h-full">
-						<a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
-							Logout
-						</a>
+               <div class="right-top-bar flex-w h-full">
+                  <a href="/mall/logout" class="flex-c-m trans-04 p-lr-25">
+                     Logout
+                  </a>
 
-						<a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-					</div>
-				</div>
-			</div>
+                  <a href="/mall/myaccount" class="flex-c-m trans-04 p-lr-25">
+                     My Account
+                  </a>
+               </div>
+            </div>
+         </div>
 
-			<div class="wrap-menu-desktop how-shadow1">
-				<nav class="limiter-menu-desktop container">
-					
-					<!-- Logo desktop -->		
-					<a href="/mall" class="logo">
-						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
-					</a>
+         <div class="wrap-menu-desktop how-shadow1">
+            <nav class="limiter-menu-desktop container">
+               
+               <!-- Logo desktop -->      
+               <a href="/mall" class="logo">
+                  <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+               </a>
 
                <!-- Menu desktop -->
                <div class="menu-desktop">
@@ -86,46 +86,46 @@
                      </li>
 
                   </ul>
-               </div> 	
-				</nav>
-			</div>	
-		</div>
+               </div>    
+            </nav>
+         </div>   
+      </div>
 
-		<!-- Header Mobile -->
-		<div class="wrap-header-mobile">
-			<!-- Logo moblie -->		
-			<div class="logo-mobile">
-				<a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
-			</div>
+      <!-- Header Mobile -->
+      <div class="wrap-header-mobile">
+         <!-- Logo moblie -->      
+         <div class="logo-mobile">
+            <a href="/mall"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+         </div>
 
-			<!-- Button show menu -->
-			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
-				<span class="hamburger-box">
-					<span class="hamburger-inner"></span>
-				</span>
-			</div>
-		</div>
+         <!-- Button show menu -->
+         <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+            <span class="hamburger-box">
+               <span class="hamburger-inner"></span>
+            </span>
+         </div>
+      </div>
 
 
-		<!-- Menu Mobile -->
-		<div class="menu-mobile">
-			<ul class="topbar-mobile">
-				<li>
-					<h2><%= session.name %>님 안녕하세요!</h2>
-				</li>
+      <!-- Menu Mobile -->
+      <div class="menu-mobile">
+         <ul class="topbar-mobile">
+            <li>
+               <h2><%= session.name %>님 안녕하세요!</h2>
+            </li>
 
-				<li>
-					<div class="right-top-bar flex-w h-full">
-						<a href="/mall/logout" class="flex-c-m p-lr-10 trans-04">
-							Logout
-						</a>
+            <li>
+               <div class="right-top-bar flex-w h-full">
+                  <a href="/mall/logout" class="flex-c-m p-lr-10 trans-04">
+                     Logout
+                  </a>
 
-						<a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
-							My Account
-						</a>
-					</div>
-				</li>
-			</ul>
+                  <a href="/mall/myaccount" class="flex-c-m p-lr-10 trans-04">
+                     My Account
+                  </a>
+               </div>
+            </li>
+         </ul>
 
          <ul class="main-menu-m">
             <li>
@@ -137,72 +137,72 @@
             <li><a href="/mall/product_sale">판매조회</a></li>            
 
          </ul>
-		</div>
+      </div>
 
-	</header>
-	
-	<script>
-		function numberWithCommas(x) {
-    		document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
-		}
-	</script>
+   </header>
+   
+   <script>
+      function numberWithCommas(x) {
+          document.write( x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +"원" );
+      }
+   </script>
 
-	<form class="bg0 p-t-75 p-b-85">
-		<center><H3>주문 현황</H3></center><br><br>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
-					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<div class="wrap-table-shopping-cart">
-							<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-2">주문번호</th>
-									<th class="column-2">구매자번호</th>
-									<th class="column-1">사진</th>
-									<th class="column-3">상품명</th>
-									<th class="column-3">가격</th>
-									<th class="column-3">type</th>
-									<th class="column-3">category</th>
-									<th class="column-3">brand</th>
-									<th class="column-3">주문날짜</th>
-									<th class="column-2">주문수량</th>
-									<th class="column-2">배송상태</th>
-								</tr>
-								<% if(rows.length == 0) {%>
-									<tr class="table_row">
-										<td colspan="11"><div style="text-align:center">주문된 상품이 없습니다.</div></td>
-									</tr>								
-								<%	}else {
-									for(var i = 0; i< rows.length; i++){
-									var oneUser = rows[i];
-								%>
-								<tr class="table_row">
-									<td class="column-3"><center><%=oneUser.O_id%></center></td>
-									<td class="column-3"><%=oneUser.C_id%></td>
-									<td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
-									<td class="column-3"><%=oneUser.name%></td>
-									<td class="column-3"><script>numberWithCommas(<%=oneUser.price%>);</script></td>
-									<td class="column-3"><%=oneUser.type%></td>
-									<td class="column-3"><%=oneUser.category%></td>
-									<td class="column-3"><%=oneUser.brand%></td>
-									<td class="column-3"><%=oneUser.date%></td>
-									<td class="column-2"><center><%=oneUser.cnt%></center></td>
-									<td class="column-3"><%=oneUser.ship_state%></td>
-								</tr>
-								<%
-										}
-									}
-								%>
-							</table>
-						</div>
+   <form class="bg0 p-t-75 p-b-85">
+      <center><H3>주문 현황</H3></center><br><br>
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-11 col-xl-11 m-lr-auto m-b-50">
+               <div class="m-l-25 m-r--38 m-lr-0-xl">
+                  <div class="wrap-table-shopping-cart">
+                     <table class="table-shopping-cart">
+                        <tr class="table_head">
+                           <th class="column-2">주문번호</th>
+                           <th class="column-2">구매자번호</th>
+                           <th class="column-1">사진</th>
+                           <th class="column-3">상품명</th>
+                           <th class="column-3">가격</th>
+                           <th class="column-3">type</th>
+                           <th class="column-3">category</th>
+                           <th class="column-3">brand</th>
+                           <th class="column-3">주문날짜</th>
+                           <th class="column-2">주문수량</th>
+                           <th class="column-2">배송상태</th>
+                        </tr>
+                        <% if(rows.length == 0) {%>
+                           <tr class="table_row">
+                              <td colspan="11"><div style="text-align:center">주문된 상품이 없습니다.</div></td>
+                           </tr>                        
+                        <%   }else {
+                           for(var i = 0; i< rows.length; i++){
+                           var oneUser = rows[i];
+                        %>
+                        <tr class="table_row">
+                           <td class="column-3"><center><%=oneUser.O_id%></center></td>
+                           <td class="column-3"><%=oneUser.C_id%></td>
+                           <td><img src="images/<%=oneUser.img%>" alt="사진 없음" width="150" height="150"/></td>
+                           <td class="column-3"><%=oneUser.name%></td>
+                           <td class="column-3"><script>numberWithCommas(<%=oneUser.price%>);</script></td>
+                           <td class="column-3"><%=oneUser.type%></td>
+                           <td class="column-3"><%=oneUser.category%></td>
+                           <td class="column-3"><%=oneUser.brand%></td>
+                           <td class="column-3"><%=oneUser.date%></td>
+                           <td class="column-2"><center><%=oneUser.cnt%></center></td>
+                           <td class="column-3"><%=oneUser.ship_state%></td>
+                        </tr>
+                        <%
+                              }
+                           }
+                        %>
+                     </table>
+                  </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
 
-		
+      
 
    <!-- Footer -->
    <footer class="bg3 p-t-75 p-b-32">
@@ -242,51 +242,51 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
    </footer>
 
 
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-	</div>
+   <!-- Back to top -->
+   <div class="btn-back-to-top" id="myBtn">
+      <span class="symbol-btn-back-to-top">
+         <i class="zmdi zmdi-chevron-up"></i>
+      </span>
+   </div>
 
-<!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->   
+   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
+   <script src="vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+   <script src="vendor/bootstrap/js/popper.js"></script>
+   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-	</script>
+   <script src="vendor/select2/select2.min.js"></script>
+   <script>
+      $(".js-select2").each(function(){
+         $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+         });
+      })
+   </script>
 <!--===============================================================================================-->
-	<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+   <script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script>
-		$('.js-pscroll').each(function(){
-			$(this).css('position','relative');
-			$(this).css('overflow','hidden');
-			var ps = new PerfectScrollbar(this, {
-				wheelSpeed: 1,
-				scrollingThreshold: 1000,
-				wheelPropagation: false,
-			});
+   <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+   <script>
+      $('.js-pscroll').each(function(){
+         $(this).css('position','relative');
+         $(this).css('overflow','hidden');
+         var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+         });
 
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
+         $(window).on('resize', function(){
+            ps.update();
+         })
+      });
+   </script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+   <script src="js/main.js"></script>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: 'sw8836^^',
+	password: '0000',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -471,16 +471,6 @@ router.get('/product_detail/:I_id', function(req, res, next) {
 		});
 	});
 });
-
-/*상품조회 post method*/
-router.post('/product_detail/:I_id', function(req, res, next) {
-	var id = req.params.I_id;
-	var pk = req.session.pk;
-	var val = req.body.num_product;
-	console.log(val);
-	pool.getConnection(function(err, connection){
-		var datas = [id,pk,val];
-		var sql = "insert into cart(I_id,C_id,val) values (?,?,?)";
 
 /*상품조회 post method*/
 router.post('/product_detail/:I_id', function(req, res, next) {

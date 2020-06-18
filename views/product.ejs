@@ -83,12 +83,8 @@
                <!-- Menu desktop -->
                <div class="menu-desktop">
                   <ul class="main-menu">
-<<<<<<< HEAD
                      <li><a href="/mall/product">상품조회</a></li>
-					 <li><a href="/mall/product_ranking">상품랭킹</a></li>
-=======
-                     <li class="label1" data-label1="hot"><a href="/mall/product">상품조회</a></li>
->>>>>>> upstream/master
+                     <li><a href="/mall/product_ranking">상품랭킹</a></li>
                      <li><a href="/mall/cart">장바구니</a></li>
                      <li><a href="/mall/purchase">구매내역</a></li>
                   </ul>
@@ -139,8 +135,8 @@
          <ul class="main-menu-m">
             <li><a href="/mall">Home</a></li>
             <li><a href="/mall/product">상품조회</a></li>
-			<li><a href="/mall/product_ranking">상품랭킹</a></li>
-			<li><a href="/mall/cart">장바구니</a></li>
+         <li><a href="/mall/product_ranking">상품랭킹</a></li>
+         <li><a href="/mall/cart">장바구니</a></li>
             <li><a href="/mall/purchase">구매내역</a></li>
          </ul>
       </div>
@@ -308,17 +304,15 @@
                            <% }else{ %><script>numberWithCommas(<%=rows[i].price%>);</script> <% } %>
                         </span>
                      </div>
-<<<<<<< HEAD
 
                      <div class="block2-txt-child2 flex-r p-t-3">
                         <% for(var j = 0; j < recommend.length; j++){ %>
-							<% if(rows[i].I_id == recommend[j].I_id){ %>
-								<li class="label1" data-label1="추천"></li>
-						<%	}	%>
-					<%	}	%>
+                     <% if(rows[i].I_id == recommend[j].I_id){ %>
+                        <li class="label1" data-label1="추천"></li>
+                  <%   }   %>
+               <%   }   %>
                      </div>
-=======
->>>>>>> upstream/master
+
                   </div>
                </div>
 

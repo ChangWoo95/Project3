@@ -352,11 +352,15 @@ router.post('/product_delete/:I_id', function(req, res, next){
 router.get('/product_sale', function (req, res, next) {
 
     pool.getConnection(function (err, connection) {
-        var sqlproduct = "SELECT Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand, Orderlist.date, Orderlist.cnt FROM Item, Orderlist WHERE Item.I_id = Orderlist.I_id and  Orderlist.ship_state = '배송 완료'";
+        var sqlproduct = "SELECT Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand, Orderlist.date, Orderlist.cnt FROM Item, Orderlist WHERE Item.I_id = Orderlist.I_id and  Orderlist.ship_state = '배송 완료';";
+        sqlproduct += "select MONTH(date) as mon, sum(cnt * price) as sale from orderlist where YEAR(date) = YEAR(now()) group by mon;";
+        sqlproduct += "select DAY(date) as day, sum(cnt * price) as sale from orderlist where YEAR(date) = YEAR(now()) and MONTH(date) = MONTH(now()) group by day;";
+        sqlproduct += "select hour(date) as hour, sum(cnt * price) as sale from orderlist where YEAR(date) = YEAR(now()) and MONTH(date) = MONTH(now()) and day(date) = day(now()) group by hour;";
+        
         connection.query(sqlproduct, req.session.name, function (err, rows) {
-            //console.log("이름 : ",rows[0].img);
+            console.log("이름 : ",rows[1]);
             if (err) console.error("err : " + err);
-            else res.render('product_sale', { session: req.session, rows: rows });
+            else res.render('product_sale', { session: req.session, rows: rows[0], g_mon: rows[1], g_day: rows[2], g_hour: rows[3] });
             connection.release();
 
         });
@@ -369,8 +373,8 @@ router.get('/product_orderlist', function (req, res, next) {
     pool.getConnection(function (err, connection) {
     	var pk = req.session.pk;
     	var sqlproduct ="";
-        sqlproduct = sqlproduct + "update orderlist set ship_state = '배송 완료' where TIMESTAMPDIFF(second,orderlist.date,now()) > 60;";
-        sqlproduct = sqlproduct + "SELECT Orderlist.O_id, Orderlist.C_id, Orderlist.date, Orderlist.cnt, Orderlist.ship_state, Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand FROM Orderlist, Item WHERE Orderlist.I_id = Item.I_id and Item.S_id = ? and Orderlist.ship_state = '배송 전';";
+        sqlproduct += "update orderlist set ship_state = '배송 완료' where TIMESTAMPDIFF(second,orderlist.date,now()) > 60;";
+        sqlproduct += "SELECT Orderlist.O_id, Orderlist.C_id, Orderlist.date, Orderlist.cnt, Orderlist.ship_state, Item.img, Item.name, Item.price, Item.type, Item.category, Item.brand FROM Orderlist, Item WHERE Orderlist.I_id = Item.I_id and Item.S_id = ? and Orderlist.ship_state = '배송 전';";
 
         connection.query(sqlproduct, pk, function (err, rows) {
             //console.log("이름 : ",rows[0].img);
@@ -490,6 +494,26 @@ router.post('/product_detail/:I_id', function(req, res, next) {
    });
 });
 
+/*상품랭킹 get method*/
+router.get('/product_ranking', function (req, res, next) {
+    var pk = req.session.pk;
+    pool.getConnection(function (err, connection) {
+        //var sql1 = "select * from item order by I_id;";
+        //var sql2 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
+        var sql1 = "select distinct Item.I_id, Item.img, Item.name from Item, Orderlist where Item.I_id in (select I_id from orderlist group by I_id order by sum(cnt) desc);"; //구매량TOP10
+        var sql2 = "select img, name, grade from Item order by grade desc;"; //평점TOP10
+        var sql3 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
+        connection.query(sql1 + sql2 + sql3, pk, function (err, result) {
+            if (err) console.error("글 삭제 중 에러 발생 err : ", err);
+            else {
+                var sum = 0;
+                res.render('product_ranking', { session: req.session, sale: result[0], grade: result[1], cart: result[2], sum: sum });
+            }
+            connection.release();
+        });
+    });
+});
+
 router.get('/cart', function(req, res, next) {
 	pool.getConnection(function(err, connection){
 		var pk = req.session.pk;
@@ -562,7 +586,8 @@ router.post('/check_out', function(req, res, next) {
 			datas.push(item);
 			datas.push(ch_val[index]);
 			datas.push(date);
-			sql += "insert into Orderlist(C_id,I_id,cnt,date) values(?,?,?,?);";			
+			datas.push(item);
+			sql += "insert into Orderlist(C_id,I_id,cnt,date,price) values(?,?,?,?,(select price from item where I_id=?));";			
 
 			datas.push(item);
 			datas.push(ch_val[index]);
@@ -585,7 +610,8 @@ router.post('/check_out', function(req, res, next) {
 		datas.push(chk);
 		datas.push(ch_val);
 		datas.push(date);
-		sql += "insert into Orderlist(C_id,I_id,cnt,date) values(?,?,?,?);";			
+		datas.push(chk);
+		sql += "insert into Orderlist(C_id,I_id,cnt,date,price) values(?,?,?,?,(select price from item where I_id=?));";			
 
 		datas.push(chk);
 		datas.push(ch_val);
@@ -641,29 +667,30 @@ router.get('/purchase', function(req, res, next) {
 
 router.post('/purchase', function(req, res, next) {
 	var pk = req.session.pk;
-	var sql= "select purchase.*,item.img,item.name,item.price from purchase,item where purchase.C_id=? and purchase.I_id = item.I_id";
+	var c = req.body.btn_cancel;
 
-	console.log("sql!!: "+sql);
-	
+	console.log("확인! : "+c);
+	var datas = [];
+	var sql = "";
+
+	sql += "update item set cnt = (select cnt from (select * from item where I_id= (select I_id from purchase where P_id=?) ) as tmp) + (select val from purchase where P_id = ?) where I_id= (select I_id from purchase where P_id = ?);";
+	datas.push(c);
+	datas.push(c);
+	datas.push(c);
+
+	sql += "delete from orderlist where C_id = ? and I_id = (select I_id from purchase where P_id = ?) and date = (select date from purchase where P_id = ?);";
+	datas.push(pk);
+	datas.push(c);
+	datas.push(c);
+
+	sql += "delete from purchase where I_id = (select * from (select I_id from purchase where P_id = ?) as x);";
+	datas.push(c);	
 	
 	pool.getConnection(function(err, connection){
-		connection.query(sql,pk, function(err, result){
+		connection.query(sql,datas, function(err, result){
 			if(err) console.error("구매내역 발생 err : ", err);
 			else {
-				var diff = [];
-				for(var i=0; i<result.length;i++){
-					var prev = moment(result[i].date);
-					var now_d = moment();
-					console.log("과거: ", prev.format('YYYY-MM-DD HH:mm:ss'));
-					console.log("지금 : ", now_d.format('YYYY-MM-DD HH:mm:ss'));
-					if( moment.duration(now_d - prev).asMinutes() <= 10) {
-						console.log(moment.duration(now_d - prev).asMinutes());
-						diff.push('T');
-					}
-					else diff.push('F');
-				}
-				console.log(diff);
-				res.render('purchase',{session: req.session, pur: result, diff: diff});		
+				res.redirect('purchase');	
 			}
 			connection.release();
 		});
@@ -704,9 +731,10 @@ router.post('/review', function(req, res, next) {
 	datas.push(text);
 	datas.push(date);
 	datas.push(idx);
+	datas.push(idx);
 
 	sql += "insert into review(C_id,I_id,score,review,date) values(?,?,?,?,?);";
-	sql += "UPDATE item SET grade = (select avg(score) from review where review.I_id = ?);";
+	sql += "UPDATE item SET grade = (select avg(score) from review where review.I_id = ?) where item.I_id = ?;";
 
 	console.log("확인1 :",datas);
 	console.log("확인2 :",sql);

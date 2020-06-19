@@ -21,7 +21,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	database: 'shopping',
-	password: '0000',
+	password: 'gosemvhs1~@#',
 	dateStrings: 'date',
 	multipleStatements: true
 });
@@ -430,17 +430,15 @@ router.get('/myaccount_update', function(req, res, next) {
 /*상품보기 get method*/
 router.get('/product', function(req, res, next) {
     var pk = req.session.pk;
-    var datas = [pk, pk + 1, pk];
+    var datas = [pk + 1, pk];
 	pool.getConnection(function(err, connection){
 		var sql1 = "select I.*,O.sale,O.startdate,O.enddate,TIMESTAMPDIFF(day,now(),O.enddate) as diff from item as I left join onsale as O on I.I_id = O.I_id and TIMESTAMPDIFF(second,O.startdate,now()) > 0 order by I.I_id;";
-		var sql2 = "select item.*,cart.val from cart,item where item.I_id = cart.I_id and cart.C_id=?;";
+		var sql2 = "select * from item;";
 		var sql3 = "select I_id from purchase where purchase.C_id=? and I_id not in (select I_id from purchase where purchase.C_id=?);";
+		
 		connection.query(sql1+sql2+sql3, datas, function(err, result){
 			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
-			else {
-				var sum = 0;
-				res.render('product',{session: req.session, rows: result[0], cart: result[1], recommend: result[2], sum: sum});
-			}
+			else res.render('product',{session: req.session, rows: result[0], cart: result[1], recommend: result[2]});
 			connection.release();
 		});
 	});
@@ -462,10 +460,7 @@ router.get('/product_detail/:I_id', function(req, res, next) {
 
 		connection.query(sql+sql2+sql3, datas, function(err, rows){
 			if(err) console.error("글 삭제 중 에러 발생 err : ", err);
-			else {
-				var sum = 0;
-				res.render('product_detail',{session: req.session, row: rows[0][0], review: rows[1], cart: rows[2], sum: sum});
-			}
+			else res.render('product_detail',{session: req.session, row: rows[0][0], review: rows[1], cart: rows[2]});
 	
 			connection.release();
 		});
